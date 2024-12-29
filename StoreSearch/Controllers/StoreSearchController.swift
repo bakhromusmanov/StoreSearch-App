@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StoreSearchController: UIViewController {
+final class StoreSearchController: UIViewController {
    
    //MARK: Properties
    @IBOutlet weak var searchBar: UISearchBar!
@@ -15,12 +15,13 @@ class StoreSearchController: UIViewController {
    
    
    //MARK: Properties
-   var searchResult = [String]()
+   private var searchResults = [SearchResult]()
+   private var hasSearched = false
    
    //MARK: Initialzation
    override func viewDidLoad() {
       super.viewDidLoad()
-      
+
    }
    
    //MARK: Actions
@@ -31,11 +32,17 @@ class StoreSearchController: UIViewController {
 //MARK: - UISearchBarDelegate
 extension StoreSearchController: UISearchBarDelegate {
    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-      searchResult = []
-      for i in 0..<3 {
-         searchResult.append(String(format: "Fake search %d for %@", i, searchBar.text!))
+      searchResults.removeAll()
+      if searchBar.text != "Justin" {
+         for i in 0..<3 {
+            let result = SearchResult(
+               name: String(format: "Music name %d", i),
+               artistName: searchBar.text!)
+            searchResults.append(result)
+         }
       }
       searchBar.resignFirstResponder()
+      hasSearched = true
       tableView.reloadData()
    }
    
@@ -47,17 +54,32 @@ extension StoreSearchController: UISearchBarDelegate {
 //MARK: - UITableViewDataSource
 extension StoreSearchController: UITableViewDataSource {
    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return searchResult.count
+      guard hasSearched else { return 0 }
+      return searchResults.isEmpty ? 1 : searchResults.count
    }
    
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath)
-      cell.textLabel?.text = searchResult[indexPath.row]
+      
+      if searchResults.isEmpty {
+         cell.textLabel?.text = "No Results Found"
+         cell.detailTextLabel?.text = ""
+      } else {
+         let result = searchResults[indexPath.row]
+         cell.textLabel?.text = result.artistName
+         cell.detailTextLabel?.text = result.name
+      }
       return cell
    }
 }
 
 //MARK: - UITableViewDelegate
 extension StoreSearchController: UITableViewDelegate {
+   func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+      return searchResults.count == 0 ? nil : indexPath
+   }
    
+   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      tableView.deselectRow(at: indexPath, animated: true)
+   }
 }
