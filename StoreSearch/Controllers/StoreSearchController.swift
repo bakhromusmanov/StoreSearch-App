@@ -10,7 +10,7 @@ import UIKit
 final class StoreSearchController: UIViewController {
    
    //MARK: CellIdentifiers
-   struct TableView {
+   private struct TableView {
       struct CellIdentifiers {
          static let searchResultCell = "SearchResultCell"
          static let nothingFoundCell = "NothingFoundCell"
@@ -20,7 +20,6 @@ final class StoreSearchController: UIViewController {
    @IBOutlet weak var searchBar: UISearchBar!
    @IBOutlet weak var tableView: UITableView!
    
-   
    //MARK: Properties
    private var searchResults = [SearchResult]()
    private var hasSearched = false
@@ -28,7 +27,10 @@ final class StoreSearchController: UIViewController {
    //MARK: Initialization
    override func viewDidLoad() {
       super.viewDidLoad()
+      
+      searchBar.becomeFirstResponder()
       registerTableViewCells()
+      
    }
    
    //MARK: Actions
