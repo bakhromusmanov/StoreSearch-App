@@ -49,7 +49,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="searchBar" destination="oQX-pW-4So" id="ZJw-TW-BJ5"/>
+                        <outlet property="searchBar" destination="oQX-pW-4So" id="JLE-HN-wwL"/>
                         <outlet property="tableView" destination="vVo-er-VoX" id="FfN-5F-9D3"/>
                     </connections>
                 </viewController>

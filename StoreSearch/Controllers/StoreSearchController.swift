@@ -44,20 +44,24 @@ final class StoreSearchController: UIViewController {
          UINib(nibName: TableView.CellIdentifiers.nothingFoundCell, bundle: nil),
          forCellReuseIdentifier: TableView.CellIdentifiers.nothingFoundCell)
    }
+   
+   private func iTunesURL(searchText: String) -> URL? {
+      guard let encryptedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
+      let url = String(format: "https://itunes.apple.com/search?term=%@", encryptedText)
+      return URL(string: url)
+   }
 }
 
 //MARK: - UISearchBarDelegate
 extension StoreSearchController: UISearchBarDelegate {
    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+      
+      guard let searchText = searchBar.text else { return }
+      guard let url = iTunesURL(searchText: searchText) else { return }
+      
       searchResults.removeAll()
-      if searchBar.text != "Justin" {
-         for i in 0..<3 {
-            let result = SearchResult(
-               name: String(format: "Fake result %d for", i),
-               artistName: searchBar.text!)
-            searchResults.append(result)
-         }
-      }
+      print(url)
+      
       searchBar.resignFirstResponder()
       hasSearched = true
       tableView.reloadData()

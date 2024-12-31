@@ -30,3 +30,5 @@ final class SearchResultCell: UITableViewCell {
    }
    
 }
+
+
