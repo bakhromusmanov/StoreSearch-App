@@ -101,7 +101,7 @@ extension StoreSearchController: UISearchBarDelegate {
       searchResults.removeAll()
       if let jsonData = performRequest(with: url) {
          searchResults = parse(data: jsonData)
-         print(searchResults)
+         searchResults.sort(by: <)
       }
 
       searchBar.resignFirstResponder()
@@ -129,9 +129,12 @@ extension StoreSearchController: UITableViewDataSource {
       }
       
       guard let cell = tableView.dequeueReusableCell(withIdentifier: TableView.CellIdentifiers.searchResultCell, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
-      let result = searchResults[indexPath.row]
-      cell.nameLabel.text = result.name
-      cell.artistNameLabel.text = result.artistName
+      let searchResult = searchResults[indexPath.row]
+      
+      cell.nameLabel.text = searchResult.name
+      let artistName = searchResult.artistName ?? "Unknown"
+      cell.artistNameLabel.text = String(format: "%@ (%@)", artistName, searchResult.type)
+                                            
       return cell
    }
 }
