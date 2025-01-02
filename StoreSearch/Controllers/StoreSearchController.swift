@@ -50,18 +50,60 @@ final class StoreSearchController: UIViewController {
       let url = String(format: "https://itunes.apple.com/search?term=%@", encryptedText)
       return URL(string: url)
    }
+   
+   private func performRequest(with url: URL) -> Data? {
+      do {
+         return try Data(contentsOf: url)
+      } catch {
+         print("Download error: \(error.localizedDescription)")
+         showErrorAlert()
+         return nil
+      }
+   }
+   
+   private func parse(data: Data) -> [SearchResult] {
+      do {
+         let decoder = JSONDecoder()
+         let result = try decoder.decode(ResultArray.self, from: data)
+         return result.results
+      } catch {
+         print("JSON parse error: \(error.localizedDescription)")
+         showErrorAlert()
+         return []
+      }
+   }
+   
+   private func showErrorAlert() {
+      let alert = UIAlertController(
+         title: "Whoops...",
+         message: "There was an error accessing the iTunes Store. " +
+         "Please, try again later",
+         preferredStyle: .alert)
+      
+      let action = UIAlertAction(
+         title: "OK",
+         style: .default,
+         handler: nil)
+      
+      alert.addAction(action)
+      present(alert, animated: true)
+   }
+   
 }
 
 //MARK: - UISearchBarDelegate
 extension StoreSearchController: UISearchBarDelegate {
    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
       
-      guard let searchText = searchBar.text else { return }
+      guard let searchText = searchBar.text, !searchText.isEmpty else { return }
       guard let url = iTunesURL(searchText: searchText) else { return }
       
       searchResults.removeAll()
-      print(url)
-      
+      if let jsonData = performRequest(with: url) {
+         searchResults = parse(data: jsonData)
+         print(searchResults)
+      }
+
       searchBar.resignFirstResponder()
       hasSearched = true
       tableView.reloadData()

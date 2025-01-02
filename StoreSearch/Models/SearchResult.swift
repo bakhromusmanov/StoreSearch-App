@@ -7,12 +7,33 @@
 
 import Foundation
 
-final class SearchResult {
-   var name: String
-   var artistName: String
+final class SearchResult: Codable {
+   var trackName: String?
+   var artistName: String?
+   var kind: String?
+   var name: String? {
+      return trackName
+   }
    
-   init(name: String = "", artistName: String = "") {
-      self.name = name
+   init(trackName: String = "None", artistName: String = "None", kind: String = "None") {
+      self.trackName = trackName
       self.artistName = artistName
+      self.kind = kind
+   }
+}
+
+final class ResultArray: Codable {
+   var resultCount: Int
+   var results: [SearchResult]
+   
+   init(resultCount: Int = 0, results: [SearchResult] = []) {
+      self.resultCount = resultCount
+      self.results = results
+   }
+}
+
+extension SearchResult: CustomStringConvertible {
+   var description: String {
+      return "\nResult - Kind: \(kind!), Name: \(name!), Artist Name: \(artistName!)"
    }
 }
