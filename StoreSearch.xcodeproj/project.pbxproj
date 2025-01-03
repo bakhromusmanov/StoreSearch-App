@@ -17,6 +17,7 @@
 		D05D26172D095D5B00D692C5 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D05D26162D095D5B00D692C5 /* Base */; };
 		D05D26192D095D5C00D692C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D05D26182D095D5C00D692C5 /* Assets.xcassets */; };
 		D05D261C2D095D5C00D692C5 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D05D261B2D095D5C00D692C5 /* Base */; };
+		D0AFE3CA2D27F715005E2C91 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0AFE3C92D27F715005E2C91 /* LoadingCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		D05D26182D095D5C00D692C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D05D261B2D095D5C00D692C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D05D261D2D095D5C00D692C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0AFE3C92D27F715005E2C91 /* LoadingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				D03279672D216D83004C72BE /* SearchResultCell.xib */,
 				D03279692D21AD5C004C72BE /* SearchResultCell.swift */,
 				D032796B2D21AE26004C72BE /* NothingFoundCell.xib */,
+				D0AFE3C92D27F715005E2C91 /* LoadingCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			files = (
 				D05D26192D095D5C00D692C5 /* Assets.xcassets in Resources */,
 				D05D261C2D095D5C00D692C5 /* Base in Resources */,
+				D0AFE3CA2D27F715005E2C91 /* LoadingCell.xib in Resources */,
 				D03279682D216D83004C72BE /* SearchResultCell.xib in Resources */,
 				D032796C2D21AE26004C72BE /* NothingFoundCell.xib in Resources */,
 				D05D26172D095D5B00D692C5 /* Base in Resources */,
