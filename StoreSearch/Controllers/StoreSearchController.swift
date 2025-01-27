@@ -17,7 +17,7 @@ final class StoreSearchController: UIViewController {
          static let loadingCell = "LoadingCell"
       } }
    
-   //MARK: UI Elements
+   //MARK: Subviews
    @IBOutlet weak var searchBar: UISearchBar!
    @IBOutlet weak var tableView: UITableView!
    
@@ -31,12 +31,8 @@ final class StoreSearchController: UIViewController {
       super.viewDidLoad()
       searchBar.becomeFirstResponder()
       registerTableViewCells()
-      
    }
    
-   //MARK: Actions
-   
-   //MARK: Custom Functions
    private func registerTableViewCells() {
       tableView.register(
          UINib(nibName: TableView.CellIdentifiers.searchResultCell, bundle: nil),
@@ -49,11 +45,11 @@ final class StoreSearchController: UIViewController {
          forCellReuseIdentifier: TableView.CellIdentifiers.loadingCell)
    }
    
+   //MARK: Custom Functions
    private func iTunesURL(searchText: String) -> URL? {
       guard let encryptedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
       let url = String(format: "https://itunes.apple.com/search?term=%@&limit=200", encryptedText)
       return URL(string: url)
-      
    }
    
    private func performRequest(with url: URL) -> Data? {
