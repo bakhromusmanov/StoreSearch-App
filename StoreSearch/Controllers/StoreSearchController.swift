@@ -31,7 +31,6 @@ final class StoreSearchController: UIViewController {
       super.viewDidLoad()
       searchBar.becomeFirstResponder()
       registerTableViewCells()
-      
    }
    
    //MARK: Actions
@@ -53,17 +52,6 @@ final class StoreSearchController: UIViewController {
       guard let encryptedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
       let url = String(format: "https://itunes.apple.com/search?term=%@&limit=200", encryptedText)
       return URL(string: url)
-      
-   }
-   
-   private func performRequest(with url: URL) -> Data? {
-      do {
-         return try Data(contentsOf: url)
-      } catch {
-         print("Download error: \(error.localizedDescription)")
-         showErrorAlert()
-         return nil
-      }
    }
    
    private func parse(data: Data) -> [SearchResult] {
@@ -73,7 +61,9 @@ final class StoreSearchController: UIViewController {
          return result.results
       } catch {
          print("JSON parse error: \(error.localizedDescription)")
-         showErrorAlert()
+         DispatchQueue.main.async {
+            self.showErrorAlert()
+         }
          return []
       }
    }
@@ -101,24 +91,44 @@ extension StoreSearchController: UISearchBarDelegate {
       
       guard let searchText = searchBar.text, !searchText.isEmpty else { return }
       guard let url = self.iTunesURL(searchText: searchText) else { return }
-   
+      
       searchBar.resignFirstResponder()
       hasSearched = true
       isLoading = true
       tableView.reloadData()
       
       searchResults.removeAll()
-      DispatchQueue.global().async {
-         if let jsonData = self.performRequest(with: url) {
-            self.searchResults = self.parse(data: jsonData)
-            self.searchResults.sort(by: <)
-            DispatchQueue.main.async {
+      let session = URLSession.shared
+      let dataTask = session.dataTask(with: url) { data, response, error in
+
+           if let error = error {
+               print("Download error: \(error.localizedDescription)")
+           } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+               print("Success: \(String(describing: data))")
+           } else {
+               print("Failure: \(String(describing: response))")
+           }
+
+           if let data = data {
+               self.searchResults = self.parse(data: data)
+               self.searchResults.sort(by: <)
+               DispatchQueue.main.async {
+                   self.isLoading = false
+                   self.tableView.reloadData()
+               }
+               return
+           }
+
+           // Ensure UI updates are on the main thread
+           DispatchQueue.main.async {
+               self.hasSearched = false
                self.isLoading = false
                self.tableView.reloadData()
-            }
-            return
-         }
-      }
+               self.showErrorAlert()
+           }
+       }
+      
+      dataTask.resume()
    }
    
    func position(for bar: any UIBarPositioning) -> UIBarPosition {
