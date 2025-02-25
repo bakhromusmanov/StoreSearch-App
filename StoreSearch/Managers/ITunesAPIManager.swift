@@ -8,19 +8,19 @@
 import Foundation
 
 final class ITunesApiManager {
-   static func performFetch(for searchText: String, completion: @escaping (Result<ResultArray, NetworkError>) -> Void) {
+   static func performFetch(for searchText: String, completion: @escaping (Result<ResultArray, NetworkError>) -> Void) -> URLSessionDataTask? {
       guard let encryptedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
          completion(.failure(.invalidSearchText))
-         return
+         return nil
       }
       
       let baseURL = "https://itunes.apple.com/search?term=%@&limit=200"
       let urlString = String(format: baseURL, encryptedText)
       guard let url = URL(string: urlString) else {
          completion(.failure(.invalidURL))
-         return
+         return nil
       }
       
-      NetworkManager.performFetch(for: url, completion: completion)
+      return NetworkManager.performFetch(for: url, completion: completion)
    }
 }

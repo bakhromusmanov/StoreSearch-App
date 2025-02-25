@@ -15,6 +15,7 @@ enum NetworkError: Error {
    case invalidURL
    case decodingError
    case networkFailure
+   case unknownError(String)
    
    var localizedDescription: String {
       switch self {
@@ -32,6 +33,8 @@ enum NetworkError: Error {
          return "Error while decoding data from API"
       case .networkFailure:
          return "Error while connecting to internet"
+      case .unknownError(let message):
+         return message
       }
    }
 }

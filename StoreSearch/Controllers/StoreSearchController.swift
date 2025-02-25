@@ -25,6 +25,7 @@ final class StoreSearchController: UIViewController {
    private var searchResults = [SearchResult]()
    private var hasSearched = false
    private var isLoading = false
+   private var currentDataTask: URLSessionDataTask?
    
    //MARK: Initialization
    override func viewDidLoad() {
@@ -68,28 +69,35 @@ extension StoreSearchController: UISearchBarDelegate {
       
       guard let searchText = searchBar.text, !searchText.isEmpty else { return }
       
+      // Dismiss keyboard
       searchBar.resignFirstResponder()
+      
+      // Reset state
       hasSearched = true
       isLoading = true
-      tableView.reloadData()
       searchResults.removeAll()
+      tableView.reloadData()
       
-      ITunesApiManager.performFetch(for: searchText) { [weak self] result in
+      // Cancel previous search request
+      currentDataTask?.cancel()
+      
+      currentDataTask = ITunesApiManager.performFetch(for: searchText) { [weak self] result in
          guard let self = self else { return }
          
-         DispatchQueue.main.async {
-            switch result {
-            case .success(let resultArray):
-               self.searchResults = resultArray.results
-               self.searchResults.sort(by: <)
-               self.isLoading = false
+         switch result {
+         case .success(let resultArray):
+            self.searchResults = resultArray.results
+            self.searchResults.sort(by: <)
+            self.isLoading = false
+            DispatchQueue.main.async {
                self.tableView.reloadData()
-            case .failure(let networkError):
+            }
+         case .failure(let networkError):
+            DispatchQueue.main.async {
                self.showErrorAlert(message: networkError.localizedDescription)
             }
          }
       }
-      
    }
    
    func position(for bar: any UIBarPositioning) -> UIBarPosition {

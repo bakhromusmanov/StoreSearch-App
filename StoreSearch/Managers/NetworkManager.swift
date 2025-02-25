@@ -9,11 +9,20 @@ import Foundation
 
 final class NetworkManager {
 
-   static func performFetch<T: Decodable>(for url: URL, completion: @escaping (Result<T, NetworkError>) -> Void) {
+   static func performFetch<T: Decodable>(for url: URL, completion: @escaping (Result<T, NetworkError>) -> Void) -> URLSessionDataTask? {
       
       let urlRequest = URLRequest(url: url)
       
       let dataTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+         
+         if let error = error as? NSError, error.code == NSURLErrorCancelled {
+            return
+         }
+         
+         if let error = error as? NSError {
+            completion(.failure(.unknownError(error.localizedDescription)))
+            return
+         }
          
          guard let data = data else {
             completion(.failure(.invalidData))
@@ -39,5 +48,6 @@ final class NetworkManager {
       }
       
       dataTask.resume()
+      return dataTask
    }
 }
