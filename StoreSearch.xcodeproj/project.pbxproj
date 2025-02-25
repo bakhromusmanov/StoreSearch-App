@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A47D05692D6DA8AA009D2878 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D05682D6DA8AA009D2878 /* NetworkManager.swift */; };
+		A47D056B2D6DBAFF009D2878 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D056A2D6DBAFF009D2878 /* ErrorHandler.swift */; };
+		A4EDD3A42D6C9DA20016DCDF /* ITunesAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDD3A32D6C9DA20016DCDF /* ITunesAPIManager.swift */; };
 		D03279662D2150C7004C72BE /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03279652D2150C7004C72BE /* SearchResult.swift */; };
 		D03279682D216D83004C72BE /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03279672D216D83004C72BE /* SearchResultCell.xib */; };
 		D032796A2D21AD5C004C72BE /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03279692D21AD5C004C72BE /* SearchResultCell.swift */; };
@@ -21,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A47D05682D6DA8AA009D2878 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		A47D056A2D6DBAFF009D2878 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		A4EDD3A32D6C9DA20016DCDF /* ITunesAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesAPIManager.swift; sourceTree = "<group>"; };
 		D03279652D2150C7004C72BE /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		D03279672D216D83004C72BE /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		D03279692D21AD5C004C72BE /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -47,6 +53,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A4EDD3A22D6C9D5D0016DCDF /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A4EDD3A32D6C9DA20016DCDF /* ITunesAPIManager.swift */,
+				A47D05682D6DA8AA009D2878 /* NetworkManager.swift */,
+				A47D056A2D6DBAFF009D2878 /* ErrorHandler.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		D04BDF462D2005F7005DB5E2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +109,7 @@
 		D05D260E2D095D5B00D692C5 /* StoreSearch */ = {
 			isa = PBXGroup;
 			children = (
+				A4EDD3A22D6C9D5D0016DCDF /* Managers */,
 				D04BDF462D2005F7005DB5E2 /* Models */,
 				D04BDF472D200607005DB5E2 /* Views */,
 				D04BDF482D20060D005DB5E2 /* Controllers */,
@@ -182,7 +199,10 @@
 			files = (
 				D05D26142D095D5B00D692C5 /* StoreSearchController.swift in Sources */,
 				D05D26102D095D5B00D692C5 /* AppDelegate.swift in Sources */,
+				A4EDD3A42D6C9DA20016DCDF /* ITunesAPIManager.swift in Sources */,
+				A47D05692D6DA8AA009D2878 /* NetworkManager.swift in Sources */,
 				D03279662D2150C7004C72BE /* SearchResult.swift in Sources */,
+				A47D056B2D6DBAFF009D2878 /* ErrorHandler.swift in Sources */,
 				D05D26122D095D5B00D692C5 /* SceneDelegate.swift in Sources */,
 				D032796A2D21AD5C004C72BE /* SearchResultCell.swift in Sources */,
 			);

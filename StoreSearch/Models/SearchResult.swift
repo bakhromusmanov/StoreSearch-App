@@ -7,6 +7,18 @@
 
 import Foundation
 
+//MARK: Result Array
+final class ResultArray: Codable {
+   var resultCount: Int
+   var results: [SearchResult]
+   
+   init(resultCount: Int = 0, results: [SearchResult] = []) {
+      self.resultCount = resultCount
+      self.results = results
+   }
+}
+
+//MARK: SearchResult
 final class SearchResult: Codable {
    
    enum CodingKeys: String, CodingKey {
@@ -78,19 +90,9 @@ final class SearchResult: Codable {
       default: return "Unknown"
       }
    }
-   
 }
 
-final class ResultArray: Codable {
-   var resultCount: Int
-   var results: [SearchResult]
-   
-   init(resultCount: Int = 0, results: [SearchResult] = []) {
-      self.resultCount = resultCount
-      self.results = results
-   }
-}
-
+//MARK: Conformance to CustomStringConvertible
 extension SearchResult: CustomStringConvertible {
    var description: String {
       return """
@@ -104,7 +106,7 @@ extension SearchResult: CustomStringConvertible {
    }
 }
 
-
+//MARK: Conformance to Comparable
 extension SearchResult: Comparable {
    static func < (lhs: SearchResult, rhs: SearchResult) -> Bool {
       return lhs.name < rhs.name

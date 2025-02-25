@@ -45,40 +45,11 @@ final class StoreSearchController: UIViewController {
          forCellReuseIdentifier: TableView.CellIdentifiers.loadingCell)
    }
    
-   //MARK: Custom Functions
-   private func iTunesURL(searchText: String) -> URL? {
-      guard let encryptedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
-      let url = String(format: "https://itunes.apple.com/search?term=%@&limit=200", encryptedText)
-      return URL(string: url)
-   }
-   
-   private func performRequest(with url: URL) -> Data? {
-      do {
-         return try Data(contentsOf: url)
-      } catch {
-         print("Download error: \(error.localizedDescription)")
-         showErrorAlert()
-         return nil
-      }
-   }
-   
-   private func parse(data: Data) -> [SearchResult] {
-      do {
-         let decoder = JSONDecoder()
-         let result = try decoder.decode(ResultArray.self, from: data)
-         return result.results
-      } catch {
-         print("JSON parse error: \(error.localizedDescription)")
-         showErrorAlert()
-         return []
-      }
-   }
-   
-   private func showErrorAlert() {
+   //MARK: Private Functions
+   private func showErrorAlert(message: String) {
       let alert = UIAlertController(
          title: "Whoops...",
-         message: "There was an error accessing the iTunes Store. " +
-         "Please, try again later",
+         message: message,
          preferredStyle: .alert)
       
       let action = UIAlertAction(
@@ -96,25 +67,29 @@ extension StoreSearchController: UISearchBarDelegate {
    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
       
       guard let searchText = searchBar.text, !searchText.isEmpty else { return }
-      guard let url = self.iTunesURL(searchText: searchText) else { return }
-   
+      
       searchBar.resignFirstResponder()
       hasSearched = true
       isLoading = true
       tableView.reloadData()
-      
       searchResults.removeAll()
-      DispatchQueue.global().async {
-         if let jsonData = self.performRequest(with: url) {
-            self.searchResults = self.parse(data: jsonData)
-            self.searchResults.sort(by: <)
-            DispatchQueue.main.async {
+      
+      ITunesApiManager.performFetch(for: searchText) { [weak self] result in
+         guard let self = self else { return }
+         
+         DispatchQueue.main.async {
+            switch result {
+            case .success(let resultArray):
+               self.searchResults = resultArray.results
+               self.searchResults.sort(by: <)
                self.isLoading = false
                self.tableView.reloadData()
+            case .failure(let networkError):
+               self.showErrorAlert(message: networkError.localizedDescription)
             }
-            return
          }
       }
+      
    }
    
    func position(for bar: any UIBarPositioning) -> UIBarPosition {
