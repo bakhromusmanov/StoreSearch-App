@@ -9,17 +9,10 @@ import UIKit
 
 final class StoreSearchController: UIViewController {
    
-   //MARK: CellIdentifiers
-   private struct TableView {
-      struct CellIdentifiers {
-         static let searchResultCell = "SearchResultCell"
-         static let nothingFoundCell = "NothingFoundCell"
-         static let loadingCell = "LoadingCell"
-      } }
-   
    //MARK: Subviews
    @IBOutlet weak var searchBar: UISearchBar!
    @IBOutlet weak var tableView: UITableView!
+   @IBOutlet weak var segmentedControl: UISegmentedControl!
    
    //MARK: Properties
    private var searchResults = [SearchResult]()
@@ -34,19 +27,61 @@ final class StoreSearchController: UIViewController {
       registerTableViewCells()
    }
    
-   private func registerTableViewCells() {
-      tableView.register(
-         UINib(nibName: TableView.CellIdentifiers.searchResultCell, bundle: nil),
-         forCellReuseIdentifier: TableView.CellIdentifiers.searchResultCell)
-      tableView.register(
-         UINib(nibName: TableView.CellIdentifiers.nothingFoundCell, bundle: nil),
-         forCellReuseIdentifier: TableView.CellIdentifiers.nothingFoundCell)
-      tableView.register(
-         UINib(nibName: TableView.CellIdentifiers.loadingCell, bundle: nil),
-         forCellReuseIdentifier: TableView.CellIdentifiers.loadingCell)
+   //MARK: Actions
+   @IBAction func segmentChanged(_ sender: UISegmentedControl) {
+      performSearch()
    }
    
    //MARK: Private Functions
+   private func registerTableViewCells() {
+      tableView.register(
+         UINib(nibName: Constants.searchResultCell, bundle: nil),
+         forCellReuseIdentifier: Constants.searchResultCell)
+      tableView.register(
+         UINib(nibName: Constants.nothingFoundCell, bundle: nil),
+         forCellReuseIdentifier: Constants.nothingFoundCell)
+      tableView.register(
+         UINib(nibName: Constants.loadingCell, bundle: nil),
+         forCellReuseIdentifier: Constants.loadingCell)
+   }
+   
+   private func performSearch() {
+      guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+      // Dismiss keyboard
+      searchBar.resignFirstResponder()
+      
+      // Reset state
+      hasSearched = true
+      isLoading = true
+      searchResults.removeAll()
+      tableView.reloadData()
+      
+      // Cancel previous search request
+      currentDataTask?.cancel()
+      
+      let selectedCategory = segmentedControl.selectedSegmentIndex
+      
+      currentDataTask = ITunesApiManager.performFetch(for: searchText, category: selectedCategory) { [weak self] result in
+         guard let self = self else { return }
+         
+         switch result {
+         case .success(let resultArray):
+            self.searchResults = resultArray.results
+            self.searchResults.sort(by: <)
+            self.isLoading = false
+            DispatchQueue.main.async {
+               self.tableView.reloadData()
+            }
+         case .failure(let networkError):
+            self.isLoading = false
+            DispatchQueue.main.async {
+               self.tableView.reloadData()
+               self.showErrorAlert(message: networkError.localizedDescription)
+            }
+         }
+      }
+   }
+
    private func showErrorAlert(message: String) {
       let alert = UIAlertController(
          title: "Whoops...",
@@ -66,38 +101,7 @@ final class StoreSearchController: UIViewController {
 //MARK: - UISearchBarDelegate
 extension StoreSearchController: UISearchBarDelegate {
    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-      
-      guard let searchText = searchBar.text, !searchText.isEmpty else { return }
-      
-      // Dismiss keyboard
-      searchBar.resignFirstResponder()
-      
-      // Reset state
-      hasSearched = true
-      isLoading = true
-      searchResults.removeAll()
-      tableView.reloadData()
-      
-      // Cancel previous search request
-      currentDataTask?.cancel()
-      
-      currentDataTask = ITunesApiManager.performFetch(for: searchText) { [weak self] result in
-         guard let self = self else { return }
-         
-         switch result {
-         case .success(let resultArray):
-            self.searchResults = resultArray.results
-            self.searchResults.sort(by: <)
-            self.isLoading = false
-            DispatchQueue.main.async {
-               self.tableView.reloadData()
-            }
-         case .failure(let networkError):
-            DispatchQueue.main.async {
-               self.showErrorAlert(message: networkError.localizedDescription)
-            }
-         }
-      }
+      performSearch()
    }
    
    func position(for bar: any UIBarPositioning) -> UIBarPosition {
@@ -115,18 +119,18 @@ extension StoreSearchController: UITableViewDataSource {
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
       if isLoading {
-         let cell = tableView.dequeueReusableCell(withIdentifier: TableView.CellIdentifiers.loadingCell, for: indexPath)
+         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.loadingCell, for: indexPath)
          let spinner = cell.viewWithTag(1000) as? UIActivityIndicatorView
          spinner?.startAnimating()
          return cell
       }
       
       if searchResults.isEmpty {
-         let cell = tableView.dequeueReusableCell(withIdentifier: TableView.CellIdentifiers.nothingFoundCell, for: indexPath)
+         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.nothingFoundCell, for: indexPath)
          return cell
       }
       
-      guard let cell = tableView.dequeueReusableCell(withIdentifier: TableView.CellIdentifiers.searchResultCell, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.searchResultCell, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
       let searchResult = searchResults[indexPath.row]
       
       cell.nameLabel.text = searchResult.name
@@ -145,5 +149,14 @@ extension StoreSearchController: UITableViewDelegate {
    
    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       tableView.deselectRow(at: indexPath, animated: true)
+   }
+}
+
+//MARK: Constants
+private extension StoreSearchController {
+   enum Constants {
+      static let searchResultCell = "SearchResultCell"
+      static let nothingFoundCell = "NothingFoundCell"
+      static let loadingCell = "LoadingCell"
    }
 }

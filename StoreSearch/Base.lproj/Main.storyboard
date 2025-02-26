@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="vVo-er-VoX">
-                                <rect key="frame" x="0.0" y="76" width="375" height="591"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="cXm-mb-aNC"/>
@@ -35,21 +35,46 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="pa1-zR-OLK"/>
                                 </connections>
                             </searchBar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FJh-Bq-6hj">
+                                <rect key="frame" x="0.0" y="76" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" id="C7s-Jw-JZO">
+                                        <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="gqP-lb-WJH">
+                                            <rect key="frame" x="16" y="6" width="343" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <segments>
+                                                <segment title="All"/>
+                                                <segment title="Music"/>
+                                                <segment title="Software"/>
+                                                <segment title="E-books"/>
+                                            </segments>
+                                            <connections>
+                                                <action selector="segmentChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="93e-um-0mG"/>
+                                            </connections>
+                                        </segmentedControl>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="oQX-pW-4So" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2o2-PR-Xlt"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="vVo-er-VoX" secondAttribute="bottom" id="E4B-lI-Pj4"/>
-                            <constraint firstItem="oQX-pW-4So" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="FDV-vW-QTO"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vVo-er-VoX" secondAttribute="trailing" id="FHs-yo-CoP"/>
-                            <constraint firstItem="oQX-pW-4So" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Q61-cD-ezB"/>
-                            <constraint firstItem="vVo-er-VoX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="n1B-ZQ-38H"/>
-                            <constraint firstItem="vVo-er-VoX" firstAttribute="top" secondItem="oQX-pW-4So" secondAttribute="bottom" id="y8C-t5-gc4"/>
+                            <constraint firstItem="vVo-er-VoX" firstAttribute="top" secondItem="FJh-Bq-6hj" secondAttribute="bottom" id="8i9-nt-aT1"/>
+                            <constraint firstItem="vVo-er-VoX" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="QuP-0p-60l"/>
+                            <constraint firstItem="oQX-pW-4So" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="V5t-k3-ywD"/>
+                            <constraint firstItem="vVo-er-VoX" firstAttribute="top" secondItem="FJh-Bq-6hj" secondAttribute="bottom" id="X3P-6i-PAF"/>
+                            <constraint firstItem="FJh-Bq-6hj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="XuJ-H2-InL"/>
+                            <constraint firstItem="FJh-Bq-6hj" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ZoB-Aq-bZd"/>
+                            <constraint firstItem="FJh-Bq-6hj" firstAttribute="top" secondItem="oQX-pW-4So" secondAttribute="bottom" id="fpE-nv-pDN"/>
+                            <constraint firstItem="oQX-pW-4So" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="hze-lJ-b7S"/>
+                            <constraint firstItem="vVo-er-VoX" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="k6y-4j-mZo"/>
+                            <constraint firstItem="oQX-pW-4So" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="koQ-2u-9In"/>
+                            <constraint firstItem="vVo-er-VoX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ugv-Zl-vUO"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="searchBar" destination="oQX-pW-4So" id="JLE-HN-wwL"/>
+                        <outlet property="segmentedControl" destination="gqP-lb-WJH" id="jQz-rg-3bH"/>
                         <outlet property="tableView" destination="vVo-er-VoX" id="FfN-5F-9D3"/>
                     </connections>
                 </viewController>
