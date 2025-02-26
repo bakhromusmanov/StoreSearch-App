@@ -81,7 +81,7 @@ final class StoreSearchController: UIViewController {
          }
       }
    }
-
+   
    private func showErrorAlert(message: String) {
       let alert = UIAlertController(
          title: "Whoops...",
@@ -132,10 +132,7 @@ extension StoreSearchController: UITableViewDataSource {
       
       guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.searchResultCell, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
       let searchResult = searchResults[indexPath.row]
-      
-      cell.nameLabel.text = searchResult.name
-      let artistName = searchResult.artistName ?? "Unknown"
-      cell.artistNameLabel.text = String(format: "%@ (%@)", artistName, searchResult.type)
+      cell.configure(for: searchResult)
       return cell
    }
 }
