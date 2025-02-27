@@ -45,6 +45,7 @@ final class StoreSearchController: UIViewController {
          forCellReuseIdentifier: Constants.loadingCell)
    }
    
+   //MARK: Perform Search
    private func performSearch() {
       guard let searchText = searchBar.text, !searchText.isEmpty else { return }
       // Dismiss keyboard
@@ -82,6 +83,7 @@ final class StoreSearchController: UIViewController {
       }
    }
    
+   //MARK: Show Alert
    private func showErrorAlert(message: String) {
       let alert = UIAlertController(
          title: "Whoops...",
@@ -95,6 +97,13 @@ final class StoreSearchController: UIViewController {
       
       alert.addAction(action)
       present(alert, animated: true)
+   }
+   
+   //MARK: Navigation
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      if segue.identifier == "ShowDetail" {
+         segue.destination.modalPresentationStyle = .pageSheet
+      }
    }
 }
 
@@ -146,6 +155,7 @@ extension StoreSearchController: UITableViewDelegate {
    
    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       tableView.deselectRow(at: indexPath, animated: true)
+      performSegue(withIdentifier: "ShowDetail", sender: indexPath.row)
    }
 }
 
