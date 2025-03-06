@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 final class DetailViewController: UIViewController {
    
@@ -20,18 +21,81 @@ final class DetailViewController: UIViewController {
    @IBOutlet private weak var priceButton: UIButton!
    
    //MARK: Properties
+   private var searchResult = SearchResult()
    
    //MARK: Initialization
    override func viewDidLoad() {
       super.viewDidLoad()
-
+      popupView.layer.cornerRadius = 10
+      setupGestures()
+      configureViews()
+   }
+   
+   func setSearchResult(_ searchResult: SearchResult) {
+      self.searchResult = searchResult
    }
    
    //MARK: Private Functions
+   func configureViews() {
+      nameLabel.text = searchResult.name
+      artistNameLabel.text = searchResult.artistName
+      kindLabel.text = searchResult.kind
+      genreLabel.text = searchResult.genre
+      priceButton.titleLabel?.text = configurePriceText()
+      
+      if let urlString = searchResult.imageLarge, let imageURL = URL(string: urlString) {
+         let _ = artworkImageView.loadImage(from: imageURL)
+      }
+   }
    
-   //MARK: Actions
-   @IBAction func CloseButtonPressed(_ sender: UIButton) {
+   private func setupGestures() {
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(backgroundPressed))
+      tapGesture.delegate = self
+      tapGesture.cancelsTouchesInView = false
+      view.addGestureRecognizer(tapGesture)
+   }
+   
+   @objc private func backgroundPressed() {
       dismiss(animated: true, completion: nil)
    }
    
+   private func configurePriceText() -> String {
+      let formatter = NumberFormatter()
+      formatter.numberStyle = .currency
+      formatter.currencyCode = searchResult.currency
+      
+      let priceText: String
+      if searchResult.price == 0 {
+         priceText = Constants.priceFree
+      } else if let text = formatter.string(from: searchResult.price as NSNumber) {
+         priceText = text
+      } else {
+         priceText = Constants.priceUnknown
+      }
+      return priceText
+   }
+   
+   //MARK: Actions
+   @IBAction private func closeButtonPressed(_ sender: UIButton) {
+      dismiss(animated: true, completion: nil)
+   }
+   
+   @IBAction private func priceButtonPressed(_ sender: UIButton) {
+      guard let url = URL(string: searchResult.storeURL) else { return }
+      let SafariViewController = SFSafariViewController(url: url)
+      present(SafariViewController, animated: true, completion: nil)
+   }
+}
+
+extension DetailViewController: UIGestureRecognizerDelegate {
+   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+      return touch.view === self.view
+   }
+}
+
+private extension DetailViewController {
+   enum Constants {
+      static let priceFree = "Free"
+      static let priceUnknown = ""
+   }
 }

@@ -102,7 +102,10 @@ final class StoreSearchController: UIViewController {
    //MARK: Navigation
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       if segue.identifier == "ShowDetail" {
-         segue.destination.modalPresentationStyle = .pageSheet
+         guard let controller = segue.destination as? DetailViewController else { return }
+         controller.modalPresentationStyle = .pageSheet
+         guard let index = sender as? Int else { return }
+         controller.setSearchResult(searchResults[index])
       }
    }
 }
