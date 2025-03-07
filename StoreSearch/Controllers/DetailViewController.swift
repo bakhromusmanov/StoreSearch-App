@@ -22,6 +22,7 @@ final class DetailViewController: UIViewController {
    
    //MARK: Properties
    private var searchResult = SearchResult()
+   private var dowloadTask: URLSessionDownloadTask?
    
    //MARK: Initialization
    override func viewDidLoad() {
@@ -35,6 +36,11 @@ final class DetailViewController: UIViewController {
       self.searchResult = searchResult
    }
    
+   //MARK: Deinitialization
+   deinit {
+      dowloadTask?.cancel()
+   }
+   
    //MARK: Private Functions
    func configureViews() {
       nameLabel.text = searchResult.name
@@ -44,7 +50,7 @@ final class DetailViewController: UIViewController {
       priceButton.titleLabel?.text = configurePriceText()
       
       if let urlString = searchResult.imageLarge, let imageURL = URL(string: urlString) {
-         let _ = artworkImageView.loadImage(from: imageURL)
+         dowloadTask = artworkImageView.loadImage(from: imageURL)
       }
    }
    
