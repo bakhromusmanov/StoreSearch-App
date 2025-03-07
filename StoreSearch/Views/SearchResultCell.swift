@@ -29,6 +29,7 @@ final class SearchResultCell: UITableViewCell {
       artworkImageView.image = UIImage(systemName: "square")
    }
    
+   //MARK: Private Functions
    func configure(for searchResult: SearchResult) {
       nameLabel.text = searchResult.name
       let artistName = searchResult.artistName ?? "Unknown"
@@ -39,13 +40,16 @@ final class SearchResultCell: UITableViewCell {
       }
    }
    
-   //MARK: Private Functions
    private func setRowColor() {
       let selectedView = UIView()
       selectedView.backgroundColor = UIColor(named: "SearchBar")?.withAlphaComponent(0.5)
       selectedBackgroundView = selectedView
    }
    
+   private func setLabels() {
+      nameLabel?.adjustsFontForContentSizeCategory = true
+      artistNameLabel?.adjustsFontForContentSizeCategory = true
+   }
 }
 
 
