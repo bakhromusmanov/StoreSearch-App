@@ -10,9 +10,9 @@ import UIKit
 final class StoreSearchController: UIViewController {
    
    //MARK: Subviews
-   @IBOutlet weak var searchBar: UISearchBar!
-   @IBOutlet weak var tableView: UITableView!
-   @IBOutlet weak var segmentedControl: UISegmentedControl!
+   @IBOutlet private weak var searchBar: UISearchBar!
+   @IBOutlet private weak var tableView: UITableView!
+   @IBOutlet private weak var segmentedControl: UISegmentedControl!
    
    //MARK: Properties
    private var searchResults = [SearchResult]()
@@ -101,7 +101,7 @@ final class StoreSearchController: UIViewController {
    
    //MARK: Navigation
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      if segue.identifier == "ShowDetail" {
+      if segue.identifier == Constants.detailViewController {
          guard let controller = segue.destination as? DetailViewController else { return }
          controller.modalPresentationStyle = .pageSheet
          guard let index = sender as? Int else { return }
@@ -130,6 +130,7 @@ extension StoreSearchController: UITableViewDataSource {
    
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
+      //MARK: Dequeue LoadingCell
       if isLoading {
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.loadingCell, for: indexPath)
          let spinner = cell.viewWithTag(1000) as? UIActivityIndicatorView
@@ -137,11 +138,13 @@ extension StoreSearchController: UITableViewDataSource {
          return cell
       }
       
+      //MARK: Dequeue NothingFoundCell
       if searchResults.isEmpty {
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.nothingFoundCell, for: indexPath)
          return cell
       }
       
+      //MARK: Dequeue SearchResultCell
       guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.searchResultCell, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
       let searchResult = searchResults[indexPath.row]
       cell.configure(for: searchResult)
@@ -168,5 +171,6 @@ private extension StoreSearchController {
       static let searchResultCell = "SearchResultCell"
       static let nothingFoundCell = "NothingFoundCell"
       static let loadingCell = "LoadingCell"
+      static let detailViewController = "ShowDetail"
    }
 }

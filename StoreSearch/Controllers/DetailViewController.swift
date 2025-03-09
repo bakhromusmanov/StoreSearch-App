@@ -22,14 +22,13 @@ final class DetailViewController: UIViewController {
    
    //MARK: Properties
    private var searchResult = SearchResult()
-   private var dowloadTask: URLSessionDownloadTask?
+   private var downloadTask: URLSessionDownloadTask?
    
    //MARK: Initialization
    override func viewDidLoad() {
       super.viewDidLoad()
-      popupView.layer.cornerRadius = 10
-      setupGestures()
       configureViews()
+      setupGestures()
    }
    
    func setSearchResult(_ searchResult: SearchResult) {
@@ -38,20 +37,30 @@ final class DetailViewController: UIViewController {
    
    //MARK: Deinitialization
    deinit {
-      dowloadTask?.cancel()
+      downloadTask?.cancel()
    }
    
    //MARK: Private Functions
-   func configureViews() {
+   private func configureViews() {
+      configureGradientView()
       nameLabel.text = searchResult.name
       artistNameLabel.text = searchResult.artistName
       kindLabel.text = searchResult.kind
       genreLabel.text = searchResult.genre
       priceButton.titleLabel?.text = configurePriceText()
       
+      //MARK: Loading Artwork Thumbnail
       if let urlString = searchResult.imageLarge, let imageURL = URL(string: urlString) {
-         dowloadTask = artworkImageView.loadImage(from: imageURL)
+         downloadTask = artworkImageView.loadImage(from: imageURL)
       }
+   }
+   
+   private func configureGradientView() {
+      popupView.layer.cornerRadius = 10
+      view.backgroundColor = .clear
+      let gradientView = GradientView()
+      gradientView.frame = view.bounds
+      view.insertSubview(gradientView, at: 0)
    }
    
    private func setupGestures() {
@@ -93,12 +102,14 @@ final class DetailViewController: UIViewController {
    }
 }
 
+//MARK: UIGestureRecognizerDelegate
 extension DetailViewController: UIGestureRecognizerDelegate {
    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
       return touch.view === self.view
    }
 }
 
+//MARK: Constants
 private extension DetailViewController {
    enum Constants {
       static let priceFree = "Free"

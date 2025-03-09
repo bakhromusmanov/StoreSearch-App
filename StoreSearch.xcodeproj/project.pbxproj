@@ -12,6 +12,7 @@
 		A47D056B2D6DBAFF009D2878 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D056A2D6DBAFF009D2878 /* ErrorHandler.swift */; };
 		A49FACE42D703F5E0057DD89 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49FACE32D703F5E0057DD89 /* DetailViewController.swift */; };
 		A4EDD3A42D6C9DA20016DCDF /* ITunesAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDD3A32D6C9DA20016DCDF /* ITunesAPIManager.swift */; };
+		D00E6DCC2D7D3E070082F61F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E6DCB2D7D3E070082F61F /* GradientView.swift */; };
 		D03279662D2150C7004C72BE /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03279652D2150C7004C72BE /* SearchResult.swift */; };
 		D03279682D216D83004C72BE /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03279672D216D83004C72BE /* SearchResultCell.xib */; };
 		D032796A2D21AD5C004C72BE /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03279692D21AD5C004C72BE /* SearchResultCell.swift */; };
@@ -31,6 +32,7 @@
 		A47D056A2D6DBAFF009D2878 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		A49FACE32D703F5E0057DD89 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A4EDD3A32D6C9DA20016DCDF /* ITunesAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesAPIManager.swift; sourceTree = "<group>"; };
+		D00E6DCB2D7D3E070082F61F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D03279652D2150C7004C72BE /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		D03279672D216D83004C72BE /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		D03279692D21AD5C004C72BE /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				D03279692D21AD5C004C72BE /* SearchResultCell.swift */,
 				D032796B2D21AE26004C72BE /* NothingFoundCell.xib */,
 				D0AFE3C92D27F715005E2C91 /* LoadingCell.xib */,
+				D00E6DCB2D7D3E070082F61F /* GradientView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 			files = (
 				D05D26142D095D5B00D692C5 /* StoreSearchController.swift in Sources */,
 				D05D26102D095D5B00D692C5 /* AppDelegate.swift in Sources */,
+				D00E6DCC2D7D3E070082F61F /* GradientView.swift in Sources */,
 				A4EDD3A42D6C9DA20016DCDF /* ITunesAPIManager.swift in Sources */,
 				A47D05692D6DA8AA009D2878 /* NetworkManager.swift in Sources */,
 				D03279662D2150C7004C72BE /* SearchResult.swift in Sources */,
