@@ -59,6 +59,7 @@ final class DetailViewController: UIViewController {
       popupView.layer.cornerRadius = 10
       view.backgroundColor = .clear
       let gradientView = GradientView()
+      gradientView.isUserInteractionEnabled = false
       gradientView.frame = view.bounds
       view.insertSubview(gradientView, at: 0)
    }

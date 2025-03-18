@@ -1,5 +1,5 @@
 //
-//  ITunesAPIManager.swift
+//  ITunesService.swift
 //  StoreSearch
 //
 //  Created by Bakhrom Usmanov on 24/02/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ITunesApiManager {
+final class ITunesService {
    static func performFetch(for searchText: String, category: Int, completion: @escaping (Result<ResultArray, NetworkError>) -> Void) -> URLSessionDataTask? {
 
       let kind: String
@@ -30,6 +30,6 @@ final class ITunesApiManager {
          return nil
       }
       
-      return NetworkManager.performFetch(for: url, completion: completion)
+      return NetworkService.performFetch(for: url, completion: completion)
    }
 }

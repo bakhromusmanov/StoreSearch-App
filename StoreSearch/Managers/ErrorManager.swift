@@ -1,5 +1,5 @@
 //
-//  ErrorHandler.swift
+//  ErrorManager.swift
 //  StoreSearch
 //
 //  Created by Bakhrom Usmanov on 25/02/25.
@@ -39,7 +39,7 @@ enum NetworkError: Error {
    }
 }
 
-final class ErrorHandler {
+final class ErrorManager {
 
 }
 

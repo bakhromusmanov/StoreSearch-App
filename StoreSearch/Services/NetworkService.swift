@@ -1,5 +1,5 @@
 //
-//  NetworkManager.swift
+//  NetworkService.swift
 //  StoreSearch
 //
 //  Created by Bakhrom Usmanov on 25/02/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class NetworkManager {
+final class NetworkService {
 
    static func performFetch<T: Decodable>(for url: URL, completion: @escaping (Result<T, NetworkError>) -> Void) -> URLSessionDataTask? {
       

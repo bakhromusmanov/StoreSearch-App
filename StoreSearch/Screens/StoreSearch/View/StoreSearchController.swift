@@ -62,7 +62,7 @@ final class StoreSearchController: UIViewController {
       
       let selectedCategory = segmentedControl.selectedSegmentIndex
       
-      currentDataTask = ITunesApiManager.performFetch(for: searchText, category: selectedCategory) { [weak self] result in
+      currentDataTask = ITunesService.performFetch(for: searchText, category: selectedCategory) { [weak self] result in
          guard let self = self else { return }
          
          switch result {
