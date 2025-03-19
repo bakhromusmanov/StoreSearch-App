@@ -10,6 +10,16 @@ import SafariServices
 
 final class DetailViewController: UIViewController {
    
+   private enum AnimationStyle {
+      case fadeOut
+      case slideOut
+   }
+   
+   //MARK: Properties
+   private var dismissStyle = AnimationStyle.fadeOut
+   private var searchResult = SearchResult()
+   private var downloadTask: URLSessionDownloadTask?
+   
    //MARK: Subviews
    @IBOutlet private weak var popupView: UIView!
    @IBOutlet private weak var closeButton: UIButton!
@@ -20,11 +30,12 @@ final class DetailViewController: UIViewController {
    @IBOutlet private weak var genreLabel: UILabel!
    @IBOutlet private weak var priceButton: UIButton!
    
-   //MARK: Properties
-   private var searchResult = SearchResult()
-   private var downloadTask: URLSessionDownloadTask?
+   //MARK: Lifecycle
+   required init?(coder aDecoder: NSCoder) {
+       super.init(coder: aDecoder)
+       transitioningDelegate = self
+   }
    
-   //MARK: Initialization
    override func viewDidLoad() {
       super.viewDidLoad()
       configureViews()
@@ -65,14 +76,10 @@ final class DetailViewController: UIViewController {
    }
    
    private func setupGestures() {
-      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(backgroundPressed))
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonPressed(_:)))
       tapGesture.delegate = self
       tapGesture.cancelsTouchesInView = false
       view.addGestureRecognizer(tapGesture)
-   }
-   
-   @objc private func backgroundPressed() {
-      dismiss(animated: true, completion: nil)
    }
    
    private func configurePriceText() -> String {
@@ -93,6 +100,7 @@ final class DetailViewController: UIViewController {
    
    //MARK: Actions
    @IBAction private func closeButtonPressed(_ sender: UIButton) {
+      dismissStyle = .slideOut
       dismiss(animated: true, completion: nil)
    }
    
@@ -107,6 +115,23 @@ final class DetailViewController: UIViewController {
 extension DetailViewController: UIGestureRecognizerDelegate {
    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
       return touch.view === self.view
+   }
+}
+
+//MARK: UIViewControllerTransitioningDelegate
+extension DetailViewController: UIViewControllerTransitioningDelegate {
+   func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+      return BounceAnimationController()
+   }
+   
+   func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+      
+      switch dismissStyle {
+      case .fadeOut:
+         return FadeOutAnimationController()
+      case .slideOut:
+         return SlideOutAnimationController()
+      }
    }
 }
 

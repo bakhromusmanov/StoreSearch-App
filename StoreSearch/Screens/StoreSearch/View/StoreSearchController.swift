@@ -9,22 +9,32 @@ import UIKit
 
 final class StoreSearchController: UIViewController {
    
-   //MARK: Subviews
-   @IBOutlet private weak var searchBar: UISearchBar!
-   @IBOutlet private weak var tableView: UITableView!
-   @IBOutlet private weak var segmentedControl: UISegmentedControl!
-   
    //MARK: Properties
    private var searchResults = [SearchResult]()
    private var hasSearched = false
    private var isLoading = false
    private var currentDataTask: URLSessionDataTask?
+   private var landscapeVC: LandscapeViewController?
+   
+   //MARK: Subviews
+   @IBOutlet private weak var searchBar: UISearchBar!
+   @IBOutlet private weak var tableView: UITableView!
+   @IBOutlet private weak var segmentedControl: UISegmentedControl!
    
    //MARK: Initialization
+   
+   //MARK: - Lifecycle
    override func viewDidLoad() {
       super.viewDidLoad()
       searchBar.becomeFirstResponder()
       registerTableViewCells()
+   }
+   
+   override func viewDidAppear(_ animated: Bool) {
+      super.viewDidAppear(animated)
+      if UIDevice.current.orientation.isLandscape {
+         showLandscape(with: nil)
+      }
    }
    
    //MARK: Actions
@@ -32,7 +42,7 @@ final class StoreSearchController: UIViewController {
       performSearch()
    }
    
-   //MARK: Private Functions
+   //MARK: Private Methods
    private func registerTableViewCells() {
       tableView.register(
          UINib(nibName: Constants.searchResultCell, bundle: nil),
@@ -103,7 +113,7 @@ final class StoreSearchController: UIViewController {
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       if segue.identifier == Constants.detailViewController {
          guard let controller = segue.destination as? DetailViewController else { return }
-         controller.modalPresentationStyle = .pageSheet
+         controller.modalPresentationStyle = .custom
          guard let index = sender as? Int else { return }
          controller.setSearchResult(searchResults[index])
       }
@@ -162,6 +172,64 @@ extension StoreSearchController: UITableViewDelegate {
    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       tableView.deselectRow(at: indexPath, animated: true)
       performSegue(withIdentifier: "ShowDetail", sender: indexPath.row)
+   }
+}
+
+//MARK: - Show & Hide Landscape
+extension StoreSearchController {
+   override func willTransition(to newCollection: UITraitCollection, with coordinator: any UIViewControllerTransitionCoordinator) {
+      super.willTransition(to: newCollection, with: coordinator)
+      
+      switch newCollection.verticalSizeClass {
+      case .compact:
+         showLandscape(with: coordinator)
+      case .regular, .unspecified:
+         hideLandscape(with: coordinator)
+      @unknown default:
+         break
+      }
+   }
+   
+   private func showLandscape(with coordinator: UIViewControllerTransitionCoordinator?) {
+      
+      guard landscapeVC == nil else { return }
+      
+      landscapeVC = storyboard?.instantiateViewController(withIdentifier: "LandscapeViewController") as? LandscapeViewController
+
+      guard let controller = landscapeVC else { return }
+      controller.view.frame = view.bounds
+      view.addSubview(controller.view)
+      addChild(controller)
+      
+      if let coordinator {
+         controller.view.alpha = 0
+         coordinator.animate(alongsideTransition: { _ in
+            controller.view.alpha = 1
+            self.searchBar.resignFirstResponder()
+            if self.presentedViewController != nil {
+               self.dismiss(animated: true, completion: nil)
+            }
+         }, completion: { [weak self] _ in
+            controller.didMove(toParent: self)
+         })
+      } else {
+         self.searchBar.resignFirstResponder()
+         controller.didMove(toParent: self)
+      }
+   }
+   
+   private func hideLandscape(with coordinator: UIViewControllerTransitionCoordinator?) {
+      
+      guard let controller = landscapeVC else { return }
+      controller.willMove(toParent: nil)
+      
+      coordinator?.animate(alongsideTransition: { _ in
+         controller.view.alpha = 0
+      }, completion: { [weak self] _ in
+         controller.view.removeFromSuperview()
+         controller.removeFromParent()
+         self?.landscapeVC = nil
+      })
    }
 }
 
