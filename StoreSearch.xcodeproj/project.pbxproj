@@ -13,7 +13,8 @@
 		A47D05692D6DA8AA009D2878 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D05682D6DA8AA009D2878 /* NetworkService.swift */; };
 		A47D056B2D6DBAFF009D2878 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D056A2D6DBAFF009D2878 /* ErrorManager.swift */; };
 		A49FACE42D703F5E0057DD89 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49FACE32D703F5E0057DD89 /* DetailViewController.swift */; };
-		A4EDD3A42D6C9DA20016DCDF /* ITunesAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDD3A32D6C9DA20016DCDF /* ITunesAPIService.swift */; };
+		A4A577C22D8BE7CF00E47A2C /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A577C12D8BE7CF00E47A2C /* ThemeManager.swift */; };
+		A4EDD3A42D6C9DA20016DCDF /* ITunesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDD3A32D6C9DA20016DCDF /* ITunesService.swift */; };
 		D00E6DCC2D7D3E070082F61F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E6DCB2D7D3E070082F61F /* GradientView.swift */; };
 		D03279662D2150C7004C72BE /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03279652D2150C7004C72BE /* SearchResult.swift */; };
 		D03279682D216D83004C72BE /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03279672D216D83004C72BE /* SearchResultCell.xib */; };
@@ -37,7 +38,8 @@
 		A47D05682D6DA8AA009D2878 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		A47D056A2D6DBAFF009D2878 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		A49FACE32D703F5E0057DD89 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		A4EDD3A32D6C9DA20016DCDF /* ITunesAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesAPIService.swift; sourceTree = "<group>"; };
+		A4A577C12D8BE7CF00E47A2C /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		A4EDD3A32D6C9DA20016DCDF /* ITunesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesService.swift; sourceTree = "<group>"; };
 		D00E6DCB2D7D3E070082F61F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D03279652D2150C7004C72BE /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		D03279672D216D83004C72BE /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				A47D056A2D6DBAFF009D2878 /* ErrorManager.swift */,
+				A4A577C12D8BE7CF00E47A2C /* ThemeManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -152,7 +155,7 @@
 		D08D75ED2D869C9500A9C3D6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A4EDD3A32D6C9DA20016DCDF /* ITunesAPIService.swift */,
+				A4EDD3A32D6C9DA20016DCDF /* ITunesService.swift */,
 				A47D05682D6DA8AA009D2878 /* NetworkService.swift */,
 			);
 			path = Services;
@@ -325,7 +328,7 @@
 				D05D26142D095D5B00D692C5 /* StoreSearchController.swift in Sources */,
 				D05D26102D095D5B00D692C5 /* AppDelegate.swift in Sources */,
 				D00E6DCC2D7D3E070082F61F /* GradientView.swift in Sources */,
-				A4EDD3A42D6C9DA20016DCDF /* ITunesAPIService.swift in Sources */,
+				A4EDD3A42D6C9DA20016DCDF /* ITunesService.swift in Sources */,
 				A47D05692D6DA8AA009D2878 /* NetworkService.swift in Sources */,
 				D0FDD5CE2D89174600D67200 /* SlideOutAnimationController.swift in Sources */,
 				D03279662D2150C7004C72BE /* SearchResult.swift in Sources */,
@@ -333,6 +336,7 @@
 				A47D056B2D6DBAFF009D2878 /* ErrorManager.swift in Sources */,
 				A49FACE42D703F5E0057DD89 /* DetailViewController.swift in Sources */,
 				A4091C0A2D89852900827A3B /* LandscapeViewController.swift in Sources */,
+				A4A577C22D8BE7CF00E47A2C /* ThemeManager.swift in Sources */,
 				A42D50AE2D8AD50200356AA9 /* FadeOutAnimationController.swift in Sources */,
 				D05D26122D095D5B00D692C5 /* SceneDelegate.swift in Sources */,
 				D0FDD5CC2D89174400D67200 /* BounceAnimationController.swift in Sources */,

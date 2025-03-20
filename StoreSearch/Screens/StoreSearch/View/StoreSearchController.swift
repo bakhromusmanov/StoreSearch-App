@@ -198,6 +198,7 @@ extension StoreSearchController {
 
       guard let controller = landscapeVC else { return }
       controller.view.frame = view.bounds
+      controller.setSearchResults(with: searchResults)
       view.addSubview(controller.view)
       addChild(controller)
       
