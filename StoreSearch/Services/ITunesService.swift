@@ -23,7 +23,7 @@ final class ITunesService {
          return nil
       }
       
-      let baseURL = "https://itunes.apple.com/search?term=\(encryptedText)&limit=200&entity=\(kind)"
+      let baseURL = "https://itunes.apple.com/search?term=\(encryptedText)&limit=28&entity=\(kind)"
       
       guard let url = URL(string: baseURL) else {
          completion(.failure(.invalidURL))

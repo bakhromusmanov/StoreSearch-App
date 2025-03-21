@@ -44,7 +44,21 @@ final class LandscapeViewController: UIViewController {
    }
    
    //MARK: - Private Methods
-
+   private func makeButton(from searchResult: SearchResult) -> UIButton {
+      
+      //Load image
+      let imageSmall = searchResult.imageSmall
+      let imageView = UIImageView()
+      let imageURL = URL(string: imageSmall!)
+      let _ = imageView.loadImage(from: imageURL!)
+      
+      //Configure button
+      let button = UIButton(type: .system)
+      button.setBackgroundImage(UIImage(named: Constants.landscapeButtonImageName), for: .normal)
+      button.setImage(imageView.image, for: .normal)
+      
+      return button
+   }
 }
 
 //MARK: - Appearance & Theming
@@ -74,11 +88,8 @@ private extension LandscapeViewController {
    func configureScrollView() {
       let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
       scrollView.frame = safeAreaFrame
-      let height = safeAreaFrame.height
-      let width = safeAreaFrame.width * 3
-      scrollView.contentSize = CGSize(width: width, height: height)
       scrollView.isPagingEnabled = true
-      //scrollView.showsHorizontalScrollIndicator = false
+      scrollView.showsHorizontalScrollIndicator = false
    }
    
    func configurePageControl() {
@@ -89,10 +100,62 @@ private extension LandscapeViewController {
          width: safeAreaFrame.width,
          height: pageControl.frame.height
       )
+      pageControl.currentPage = 0
    }
    
    func configureTileButtons(with searchResults: [SearchResult]) {
       
+      //Configure container
+      let containerWidth = scrollView.bounds.width
+      let containerHeight = scrollView.bounds.height
+      
+      let itemSize = CGSize(width: 94, height: 88)
+      let columnsPerPage = Int(containerWidth / itemSize.width)
+      let rowsPerPage = Int(containerHeight / itemSize.height)
+      
+      let containerInsetX = (containerWidth - itemSize.width * CGFloat(columnsPerPage)) / 2
+      let containerInsetY = (containerHeight - itemSize.height * CGFloat(rowsPerPage)) / 2
+      
+      //Configure buttons
+      let buttonSize = CGSize(width: 82, height: 82)
+      let itemInsetX = (itemSize.width - buttonSize.width) / 2
+      let itemInsetY = (itemSize.height - buttonSize.height) / 2
+      var buttonPosX = containerInsetX
+      
+      var currentRow = 0
+      var currentColumn = 0
+      
+      for result in searchResults {
+         
+         let button = makeButton(from: result)
+         scrollView.addSubview(button)
+         button.frame = CGRect(
+            x: Int(buttonPosX + itemInsetX + CGFloat(currentColumn) * itemSize.width),
+            y: Int(containerInsetY + itemInsetY + CGFloat(currentRow) * itemSize.height),
+            width: Int(buttonSize.width),
+            height: Int(buttonSize.height)
+         )
+         
+         currentColumn += 1
+         if currentColumn == columnsPerPage {
+            currentColumn = 0
+            currentRow += 1
+            
+            if currentRow == rowsPerPage {
+               currentRow = 0
+               buttonPosX += containerWidth
+            }
+         }
+      }
+      
+      //Set scroll view content size
+      let buttonsPerPage = columnsPerPage * rowsPerPage
+      let pagesCount = 1 + searchResults.count / buttonsPerPage
+      
+      pageControl.numberOfPages = pagesCount
+      scrollView.contentSize = CGSize(
+         width: CGFloat(pagesCount) * containerWidth,
+         height: containerHeight)
    }
 }
 
@@ -100,5 +163,6 @@ private extension LandscapeViewController {
 private extension LandscapeViewController {
    enum Constants {
       static let landscapeBackgroundImageName = "LandscapeBackground"
+      static let landscapeButtonImageName = "LandscapeButton"
    }
 }
