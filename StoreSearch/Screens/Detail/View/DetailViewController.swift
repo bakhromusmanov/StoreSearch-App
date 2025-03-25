@@ -32,8 +32,8 @@ final class DetailViewController: UIViewController {
    
    //MARK: Lifecycle
    required init?(coder aDecoder: NSCoder) {
-       super.init(coder: aDecoder)
-       transitioningDelegate = self
+      super.init(coder: aDecoder)
+      transitioningDelegate = self
    }
    
    override func viewDidLoad() {
@@ -62,7 +62,11 @@ final class DetailViewController: UIViewController {
       
       //MARK: Loading Artwork Thumbnail
       if let urlString = searchResult.imageLarge, let imageURL = URL(string: urlString) {
-         downloadTask = artworkImageView.loadImage(from: imageURL)
+         downloadTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak self] image in
+            DispatchQueue.main.async {
+               self?.artworkImageView.image = image
+            }
+         })
       }
    }
    

@@ -11,6 +11,7 @@ final class LandscapeViewController: UIViewController {
    
    //MARK: - Properties
    private var isFirstTime: Bool = true
+   private var downloadTask: URLSessionDownloadTask?
    private var searchResults = [SearchResult]()
    
    //MARK: - Subviews
@@ -38,6 +39,10 @@ final class LandscapeViewController: UIViewController {
       }
    }
    
+   deinit {
+      downloadTask?.cancel()
+   }
+   
    //MARK: - Public Methods
    func setSearchResults(with searchResults: [SearchResult]) {
       self.searchResults = searchResults
@@ -46,16 +51,20 @@ final class LandscapeViewController: UIViewController {
    //MARK: - Private Methods
    private func makeButton(from searchResult: SearchResult) -> UIButton {
       
-      //Load image
-      let imageSmall = searchResult.imageSmall
-      let imageView = UIImageView()
-      let imageURL = URL(string: imageSmall!)
-      let _ = imageView.loadImage(from: imageURL!)
-      
-      //Configure button
-      let button = UIButton(type: .system)
+      let button = UIButton(type: .custom)
       button.setBackgroundImage(UIImage(named: Constants.landscapeButtonImageName), for: .normal)
-      button.setImage(imageView.image, for: .normal)
+      button.imageView?.contentMode = .scaleAspectFit
+      
+      //Load image
+      guard let imageSmall = searchResult.imageSmall,
+            let imageURL = URL(string: imageSmall) else { return UIButton() }
+      
+      downloadTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak button] image in
+         DispatchQueue.main.async {
+            guard let image = image else { return }
+            button?.setImage(image, for: .normal)
+         }
+      })
       
       return button
    }
@@ -126,7 +135,6 @@ private extension LandscapeViewController {
       var currentColumn = 0
       
       for result in searchResults {
-         
          let button = makeButton(from: result)
          scrollView.addSubview(button)
          button.frame = CGRect(
@@ -150,7 +158,7 @@ private extension LandscapeViewController {
       
       //Set scroll view content size
       let buttonsPerPage = columnsPerPage * rowsPerPage
-      let pagesCount = 1 + searchResults.count / buttonsPerPage
+      let pagesCount = 1 + (searchResults.count - 1) / buttonsPerPage
       
       pageControl.numberOfPages = pagesCount
       scrollView.contentSize = CGSize(
