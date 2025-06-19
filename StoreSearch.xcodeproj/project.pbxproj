@@ -34,9 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		34A70356C13129AE8DBF1330 /* Pods-StoreSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StoreSearch.release.xcconfig"; path = "Target Support Files/Pods-StoreSearch/Pods-StoreSearch.release.xcconfig"; sourceTree = "<group>"; };
 		4CD3D2C438B544F84AEA24AC /* Pods_StoreSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StoreSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6ABD6343EED126DB29BCBE8A /* Pods-StoreSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StoreSearch.debug.xcconfig"; path = "Target Support Files/Pods-StoreSearch/Pods-StoreSearch.debug.xcconfig"; sourceTree = "<group>"; };
 		A4091C092D89852900827A3B /* LandscapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeViewController.swift; sourceTree = "<group>"; };
 		A42D50AD2D8AD50200356AA9 /* FadeOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeOutAnimationController.swift; sourceTree = "<group>"; };
 		A46982B42D6F30640055EB1F /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
@@ -76,15 +74,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		41C66869DFD67F776C04C378 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6ABD6343EED126DB29BCBE8A /* Pods-StoreSearch.debug.xcconfig */,
-				34A70356C13129AE8DBF1330 /* Pods-StoreSearch.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		A4091C082D89850E00827A3B /* Landscape */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,7 +112,6 @@
 			children = (
 				D05D260E2D095D5B00D692C5 /* StoreSearch */,
 				D05D260D2D095D5B00D692C5 /* Products */,
-				41C66869DFD67F776C04C378 /* Pods */,
 				C250C0B20101EFAF1A2FBA98 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -567,7 +555,6 @@
 		};
 		D05D26212D095D5C00D692C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6ABD6343EED126DB29BCBE8A /* Pods-StoreSearch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -604,7 +591,6 @@
 		};
 		D05D26222D095D5C00D692C5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 34A70356C13129AE8DBF1330 /* Pods-StoreSearch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
