@@ -10,17 +10,22 @@ import UIKit
 final class LandscapeViewController: UIViewController {
    
    //MARK: - Properties
+    
    private var isFirstTime: Bool = true
-   private var downloadTask: URLSessionDownloadTask?
+   private var dataTasks = [URLSessionDataTask]()
    private var searchResults = [SearchResult]()
    
    //MARK: - Subviews
+    
    @IBOutlet private weak var scrollView: UIScrollView!
    @IBOutlet private weak var pageControl: UIPageControl!
    
    //MARK: - Initialization
+    
+    
    
    //MARK: - Lifecycle
+    
    override func viewDidLoad() {
       super.viewDidLoad()
       setupViews()
@@ -40,15 +45,19 @@ final class LandscapeViewController: UIViewController {
    }
    
    deinit {
-      downloadTask?.cancel()
+      for dataTask in dataTasks {
+         dataTask.cancel()
+      }
    }
    
    //MARK: - Public Methods
+    
    func setSearchResults(with searchResults: [SearchResult]) {
       self.searchResults = searchResults
    }
    
    //MARK: - Private Methods
+    
    private func makeButton(from searchResult: SearchResult) -> UIButton {
       
       let button = UIButton(type: .custom)
@@ -59,18 +68,40 @@ final class LandscapeViewController: UIViewController {
       guard let imageSmall = searchResult.imageSmall,
             let imageURL = URL(string: imageSmall) else { return UIButton() }
       
-      downloadTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak button] image in
+      let dataTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak button] image in
          DispatchQueue.main.async {
             guard let image = image else { return }
             button?.setImage(image, for: .normal)
          }
       })
       
+      if let dataTask = dataTask {
+         dataTasks.append(dataTask)
+      }
+      
       return button
    }
 }
 
+//MARK: - Actions
+
+private extension LandscapeViewController {
+   @IBAction func pageChanged(_ sender: UIPageControl) {
+      let offsetX = scrollView.bounds.size.width * CGFloat(sender.currentPage)
+      
+      UIView.animate(
+         withDuration: 0.4,
+         delay: 0,
+         options: .curveEaseInOut,
+         animations: { [weak self] in
+         self?.scrollView.contentOffset = CGPoint(x: offsetX, y: 0)
+      },
+         completion: nil)
+   }
+}
+
 //MARK: - Appearance & Theming
+
 private extension LandscapeViewController {
    func updateColors() {
       view.backgroundColor = UIColor(patternImage: UIImage(named: Constants.landscapeBackgroundImageName)!)
@@ -81,7 +112,18 @@ private extension LandscapeViewController {
    }
 }
 
+//MARK: - UIScrollViewDelegate
+
+extension LandscapeViewController: UIScrollViewDelegate {
+   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      let width = scrollView.bounds.size.width
+      let page = Int((scrollView.contentOffset.x + width / 2) / width)
+      pageControl.currentPage = page
+   }
+}
+
 //MARK: - Layout & Constraints
+
 private extension LandscapeViewController {
    func setupViews() {
       view.removeConstraints(view.constraints)
@@ -98,6 +140,7 @@ private extension LandscapeViewController {
       let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
       scrollView.frame = safeAreaFrame
       scrollView.isPagingEnabled = true
+      scrollView.alwaysBounceHorizontal = true
       scrollView.showsHorizontalScrollIndicator = false
    }
    
@@ -109,6 +152,7 @@ private extension LandscapeViewController {
          width: safeAreaFrame.width,
          height: pageControl.frame.height
       )
+      pageControl.numberOfPages = 0
       pageControl.currentPage = 0
    }
    
@@ -168,6 +212,7 @@ private extension LandscapeViewController {
 }
 
 //MARK: Constants
+
 private extension LandscapeViewController {
    enum Constants {
       static let landscapeBackgroundImageName = "LandscapeBackground"

@@ -1,5 +1,5 @@
 //
-//  ITunesService.swift
+//  ItunesService.swift
 //  StoreSearch
 //
 //  Created by Bakhrom Usmanov on 24/02/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ITunesService {
+final class ItunesService {
    static func performFetch(for searchText: String, category: Int, completion: @escaping (Result<ResultArray, NetworkError>) -> Void) -> URLSessionDataTask? {
 
       let kind: String
@@ -23,7 +23,7 @@ final class ITunesService {
          return nil
       }
       
-      let baseURL = "https://itunes.apple.com/search?term=\(encryptedText)&limit=18&entity=\(kind)"
+      let baseURL = "https://itunes.apple.com/search?term=\(encryptedText)&limit=50&entity=\(kind)"
       
       guard let url = URL(string: baseURL) else {
          completion(.failure(.invalidURL))

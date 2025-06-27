@@ -72,7 +72,7 @@ final class StoreSearchController: UIViewController {
       
       let selectedCategory = segmentedControl.selectedSegmentIndex
       
-      currentDataTask = ITunesService.performFetch(for: searchText, category: selectedCategory) { [weak self] result in
+      currentDataTask = ItunesService.performFetch(for: searchText, category: selectedCategory) { [weak self] result in
          guard let self = self else { return }
          
          switch result {
@@ -94,6 +94,7 @@ final class StoreSearchController: UIViewController {
    }
    
    //MARK: Show Alert
+   
    private func showErrorAlert(message: String) {
       let alert = UIAlertController(
          title: "Whoops...",
@@ -110,6 +111,7 @@ final class StoreSearchController: UIViewController {
    }
    
    //MARK: Navigation
+   
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       if segue.identifier == Constants.detailViewController {
          guard let controller = segue.destination as? DetailViewController else { return }
@@ -121,6 +123,7 @@ final class StoreSearchController: UIViewController {
 }
 
 //MARK: - UISearchBarDelegate
+
 extension StoreSearchController: UISearchBarDelegate {
    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
       performSearch()
@@ -132,6 +135,7 @@ extension StoreSearchController: UISearchBarDelegate {
 }
 
 //MARK: - UITableViewDataSource
+
 extension StoreSearchController: UITableViewDataSource {
    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       guard hasSearched else { return 0 }
@@ -163,6 +167,7 @@ extension StoreSearchController: UITableViewDataSource {
 }
 
 //MARK: - UITableViewDelegate
+
 extension StoreSearchController: UITableViewDelegate {
    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
       
@@ -176,6 +181,7 @@ extension StoreSearchController: UITableViewDelegate {
 }
 
 //MARK: - Show & Hide Landscape
+
 extension StoreSearchController {
    override func willTransition(to newCollection: UITraitCollection, with coordinator: any UIViewControllerTransitionCoordinator) {
       super.willTransition(to: newCollection, with: coordinator)
@@ -235,6 +241,7 @@ extension StoreSearchController {
 }
 
 //MARK: Constants
+
 private extension StoreSearchController {
    enum Constants {
       static let searchResultCell = "SearchResultCell"

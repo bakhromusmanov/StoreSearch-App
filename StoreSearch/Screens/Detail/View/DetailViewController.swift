@@ -18,7 +18,7 @@ final class DetailViewController: UIViewController {
    //MARK: Properties
    private var dismissStyle = AnimationStyle.fadeOut
    private var searchResult = SearchResult()
-   private var downloadTask: URLSessionDownloadTask?
+   private var dataTask: URLSessionDataTask?
    
    //MARK: Subviews
    @IBOutlet private weak var popupView: UIView!
@@ -48,7 +48,7 @@ final class DetailViewController: UIViewController {
    
    //MARK: Deinitialization
    deinit {
-      downloadTask?.cancel()
+      dataTask?.cancel()
    }
    
    //MARK: Private Functions
@@ -62,7 +62,7 @@ final class DetailViewController: UIViewController {
       
       //MARK: Loading Artwork Thumbnail
       if let urlString = searchResult.imageLarge, let imageURL = URL(string: urlString) {
-         downloadTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak self] image in
+         dataTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak self] image in
             DispatchQueue.main.async {
                self?.artworkImageView.image = image
             }

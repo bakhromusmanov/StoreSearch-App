@@ -15,7 +15,7 @@ final class SearchResultCell: UITableViewCell {
    @IBOutlet private weak var artworkImageView: UIImageView!
    
    //MARK: Properties
-   private var downloadTask: URLSessionDownloadTask?
+   private var dataTask: URLSessionDataTask?
    
    //MARK: Initialization
    override func awakeFromNib() {
@@ -24,8 +24,8 @@ final class SearchResultCell: UITableViewCell {
    }
    
    override func prepareForReuse() {
-      downloadTask?.cancel()
-      downloadTask = nil
+      dataTask?.cancel()
+      dataTask = nil
       artworkImageView.image = UIImage(systemName: "square")
    }
    
@@ -36,7 +36,7 @@ final class SearchResultCell: UITableViewCell {
       artistNameLabel.text = String(format: "%@ (%@)", artistName, searchResult.type)
       
       if let urlString = searchResult.imageSmall, let imageURL = URL(string: urlString) {
-         downloadTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak self] image in
+         dataTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak self] image in
             DispatchQueue.main.async {
                self?.artworkImageView.image = image
             }

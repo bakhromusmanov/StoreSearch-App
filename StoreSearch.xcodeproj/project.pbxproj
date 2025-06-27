@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8641AD5B6BA8652A2FA316F0 /* Pods_StoreSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CD3D2C438B544F84AEA24AC /* Pods_StoreSearch.framework */; };
 		A4091C0A2D89852900827A3B /* LandscapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4091C092D89852900827A3B /* LandscapeViewController.swift */; };
 		A42D50AE2D8AD50200356AA9 /* FadeOutAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42D50AD2D8AD50200356AA9 /* FadeOutAnimationController.swift */; };
 		A46982B52D6F30640055EB1F /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46982B42D6F30640055EB1F /* UIImageView+DownloadImage.swift */; };
@@ -15,7 +14,7 @@
 		A47D056B2D6DBAFF009D2878 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47D056A2D6DBAFF009D2878 /* ErrorManager.swift */; };
 		A49FACE42D703F5E0057DD89 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49FACE32D703F5E0057DD89 /* DetailViewController.swift */; };
 		A4A577C22D8BE7CF00E47A2C /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A577C12D8BE7CF00E47A2C /* ThemeManager.swift */; };
-		A4EDD3A42D6C9DA20016DCDF /* ITunesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDD3A32D6C9DA20016DCDF /* ITunesService.swift */; };
+		A4EDD3A42D6C9DA20016DCDF /* ItunesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDD3A32D6C9DA20016DCDF /* ItunesService.swift */; };
 		D00E6DCC2D7D3E070082F61F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E6DCB2D7D3E070082F61F /* GradientView.swift */; };
 		D03279662D2150C7004C72BE /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03279652D2150C7004C72BE /* SearchResult.swift */; };
 		D03279682D216D83004C72BE /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03279672D216D83004C72BE /* SearchResultCell.xib */; };
@@ -34,7 +33,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4CD3D2C438B544F84AEA24AC /* Pods_StoreSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StoreSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4091C092D89852900827A3B /* LandscapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeViewController.swift; sourceTree = "<group>"; };
 		A42D50AD2D8AD50200356AA9 /* FadeOutAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeOutAnimationController.swift; sourceTree = "<group>"; };
 		A46982B42D6F30640055EB1F /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
@@ -42,7 +40,7 @@
 		A47D056A2D6DBAFF009D2878 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		A49FACE32D703F5E0057DD89 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A4A577C12D8BE7CF00E47A2C /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
-		A4EDD3A32D6C9DA20016DCDF /* ITunesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesService.swift; sourceTree = "<group>"; };
+		A4EDD3A32D6C9DA20016DCDF /* ItunesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItunesService.swift; sourceTree = "<group>"; };
 		D00E6DCB2D7D3E070082F61F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D03279652D2150C7004C72BE /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		D03279672D216D83004C72BE /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
@@ -67,7 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8641AD5B6BA8652A2FA316F0 /* Pods_StoreSearch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,20 +96,11 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		C250C0B20101EFAF1A2FBA98 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4CD3D2C438B544F84AEA24AC /* Pods_StoreSearch.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		D05D26032D095D5B00D692C5 = {
 			isa = PBXGroup;
 			children = (
 				D05D260E2D095D5B00D692C5 /* StoreSearch */,
 				D05D260D2D095D5B00D692C5 /* Products */,
-				C250C0B20101EFAF1A2FBA98 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,7 +158,7 @@
 		D08D75ED2D869C9500A9C3D6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A4EDD3A32D6C9DA20016DCDF /* ITunesService.swift */,
+				A4EDD3A32D6C9DA20016DCDF /* ItunesService.swift */,
 				A47D05682D6DA8AA009D2878 /* NetworkService.swift */,
 			);
 			path = Services;
@@ -281,11 +269,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D05D26202D095D5C00D692C5 /* Build configuration list for PBXNativeTarget "StoreSearch" */;
 			buildPhases = (
-				1A91FE6B2CFEE4A814E61E8C /* [CP] Check Pods Manifest.lock */,
 				D05D26082D095D5B00D692C5 /* Sources */,
 				D05D26092D095D5B00D692C5 /* Frameworks */,
 				D05D260A2D095D5B00D692C5 /* Resources */,
-				58C38AC86575BE1D3616DC7A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -345,48 +331,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		1A91FE6B2CFEE4A814E61E8C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-StoreSearch-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		58C38AC86575BE1D3616DC7A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StoreSearch/Pods-StoreSearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StoreSearch/Pods-StoreSearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StoreSearch/Pods-StoreSearch-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		D05D26082D095D5B00D692C5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -395,7 +339,7 @@
 				D05D26142D095D5B00D692C5 /* StoreSearchController.swift in Sources */,
 				D05D26102D095D5B00D692C5 /* AppDelegate.swift in Sources */,
 				D00E6DCC2D7D3E070082F61F /* GradientView.swift in Sources */,
-				A4EDD3A42D6C9DA20016DCDF /* ITunesService.swift in Sources */,
+				A4EDD3A42D6C9DA20016DCDF /* ItunesService.swift in Sources */,
 				A47D05692D6DA8AA009D2878 /* NetworkService.swift in Sources */,
 				D0FDD5CE2D89174600D67200 /* SlideOutAnimationController.swift in Sources */,
 				D03279662D2150C7004C72BE /* SearchResult.swift in Sources */,
