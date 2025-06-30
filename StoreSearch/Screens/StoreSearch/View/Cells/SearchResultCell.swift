@@ -36,7 +36,7 @@ final class SearchResultCell: UITableViewCell {
       artistNameLabel.text = String(format: "%@ (%@)", artistName, searchResult.type)
       
       if let urlString = searchResult.imageSmall, let imageURL = URL(string: urlString) {
-         dataTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak self] image in
+         dataTask = ImageLoadingManager.shared.loadImage(from: imageURL, completion: { [weak self] image in
             DispatchQueue.main.async {
                self?.artworkImageView.image = image
             }

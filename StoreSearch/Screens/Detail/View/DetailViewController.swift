@@ -62,7 +62,7 @@ final class DetailViewController: UIViewController {
       
       //MARK: Loading Artwork Thumbnail
       if let urlString = searchResult.imageLarge, let imageURL = URL(string: urlString) {
-         dataTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak self] image in
+         dataTask = ImageLoadingManager.shared.loadImage(from: imageURL, completion: { [weak self] image in
             DispatchQueue.main.async {
                self?.artworkImageView.image = image
             }

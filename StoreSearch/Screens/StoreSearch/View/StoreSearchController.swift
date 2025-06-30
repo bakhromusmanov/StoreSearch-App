@@ -70,9 +70,9 @@ final class StoreSearchController: UIViewController {
       // Cancel previous search request
       currentDataTask?.cancel()
       
-      let selectedCategory = segmentedControl.selectedSegmentIndex
+      let selectedCategory = SearchCategory(rawValue: segmentedControl.selectedSegmentIndex)
       
-      currentDataTask = ItunesService.performFetch(for: searchText, category: selectedCategory) { [weak self] result in
+      currentDataTask = ItunesService.shared.performFetch(for: searchText, category: selectedCategory ?? .all) { [weak self] result in
          guard let self = self else { return }
          
          switch result {

@@ -9,9 +9,12 @@ import UIKit
 
 final class ImageLoadingManager {
    
-   private static let imageCache = NSCache<NSURL, UIImage>()
+   static let shared = ImageLoadingManager()
+   private init() { }
    
-   static func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask? {
+   private let imageCache = NSCache<NSURL, UIImage>()
+   
+   func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask? {
       
       if let cachedImage = imageCache.object(forKey: url as NSURL) {
           completion(cachedImage)
@@ -19,7 +22,7 @@ final class ImageLoadingManager {
       }
       
       let request = URLRequest(url: url)
-      let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+      let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
          
          if let error = error {
             print("Downloading image error. Reason: \(error.localizedDescription)")
@@ -33,7 +36,7 @@ final class ImageLoadingManager {
          }
          
          if let data = data, let image = UIImage(data: data) {
-            imageCache.setObject(image, forKey: url as NSURL)
+            self?.imageCache.setObject(image, forKey: url as NSURL)
             completion(image)
             return
          }

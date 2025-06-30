@@ -68,7 +68,7 @@ final class LandscapeViewController: UIViewController {
       guard let imageSmall = searchResult.imageSmall,
             let imageURL = URL(string: imageSmall) else { return UIButton() }
       
-      let dataTask = ImageLoadingManager.loadImage(from: imageURL, completion: { [weak button] image in
+      let dataTask = ImageLoadingManager.shared.loadImage(from: imageURL, completion: { [weak button] image in
          DispatchQueue.main.async {
             guard let image = image else { return }
             button?.setImage(image, for: .normal)
