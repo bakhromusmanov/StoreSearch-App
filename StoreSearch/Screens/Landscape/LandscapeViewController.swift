@@ -13,7 +13,7 @@ final class LandscapeViewController: UIViewController {
     
    private var isFirstTime: Bool = true
    private var dataTasks = [URLSessionDataTask]()
-   private var searchResults = [SearchResult]()
+   private var searchState: SearchState = .notSearchedYet
    
    //MARK: - Subviews
     
@@ -21,8 +21,7 @@ final class LandscapeViewController: UIViewController {
    @IBOutlet private weak var pageControl: UIPageControl!
    
    //MARK: - Initialization
-    
-    
+   
    
    //MARK: - Lifecycle
     
@@ -36,10 +35,12 @@ final class LandscapeViewController: UIViewController {
       super.viewWillLayoutSubviews()
       if isFirstTime {
          isFirstTime = false
-         configureScrollView()
-         configurePageControl()
-         if !searchResults.isEmpty {
-            configureTileButtons(with: searchResults)
+         
+         switch searchState {
+         case .notSearchedYet, .loading, .noResults:
+            break
+         case .results(let list):
+            configureTileButtons(with: list)
          }
       }
    }
@@ -52,8 +53,8 @@ final class LandscapeViewController: UIViewController {
    
    //MARK: - Public Methods
     
-   func setSearchResults(with searchResults: [SearchResult]) {
-      self.searchResults = searchResults
+   func setSearchState(_ searchState: SearchState) {
+      self.searchState = searchState
    }
    
    //MARK: - Private Methods

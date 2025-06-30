@@ -7,23 +7,29 @@
 
 import UIKit
 
+enum SearchState {
+   case notSearchedYet
+   case loading
+   case noResults
+   case results([SearchResult])
+}
+
 final class StoreSearchController: UIViewController {
    
    //MARK: Properties
-   private var searchResults = [SearchResult]()
-   private var hasSearched = false
-   private var isLoading = false
+
    private var currentDataTask: URLSessionDataTask?
    private var landscapeVC: LandscapeViewController?
+   private var searchState: SearchState = .notSearchedYet
    
    //MARK: Subviews
+   
    @IBOutlet private weak var searchBar: UISearchBar!
    @IBOutlet private weak var tableView: UITableView!
    @IBOutlet private weak var segmentedControl: UISegmentedControl!
-   
-   //MARK: Initialization
-   
+      
    //MARK: - Lifecycle
+   
    override func viewDidLoad() {
       super.viewDidLoad()
       searchBar.becomeFirstResponder()
@@ -38,11 +44,13 @@ final class StoreSearchController: UIViewController {
    }
    
    //MARK: Actions
+   
    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
       performSearch()
    }
    
    //MARK: Private Methods
+   
    private func registerTableViewCells() {
       tableView.register(
          UINib(nibName: Constants.searchResultCell, bundle: nil),
@@ -56,19 +64,15 @@ final class StoreSearchController: UIViewController {
    }
    
    //MARK: Perform Search
+   
    private func performSearch() {
       guard let searchText = searchBar.text, !searchText.isEmpty else { return }
-      // Dismiss keyboard
+      
       searchBar.resignFirstResponder()
-      
-      // Reset state
-      hasSearched = true
-      isLoading = true
-      searchResults.removeAll()
-      tableView.reloadData()
-      
-      // Cancel previous search request
       currentDataTask?.cancel()
+      
+      searchState = .loading
+      tableView.reloadData()
       
       let selectedCategory = SearchCategory(rawValue: segmentedControl.selectedSegmentIndex)
       
@@ -77,17 +81,17 @@ final class StoreSearchController: UIViewController {
          
          switch result {
          case .success(let resultArray):
-            self.searchResults = resultArray.results
-            self.searchResults.sort(by: <)
-            self.isLoading = false
+            var searchResults = resultArray.results
+            searchResults.sort(by: <)
             DispatchQueue.main.async {
+               self.searchState = searchResults.isEmpty ? .noResults : .results(searchResults)
                self.tableView.reloadData()
             }
          case .failure(let networkError):
-            self.isLoading = false
             DispatchQueue.main.async {
-               self.tableView.reloadData()
                self.showErrorAlert(message: networkError.localizedDescription)
+               self.searchState = .noResults
+               self.tableView.reloadData()
             }
          }
       }
@@ -114,10 +118,12 @@ final class StoreSearchController: UIViewController {
    
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       if segue.identifier == Constants.detailViewController {
-         guard let controller = segue.destination as? DetailViewController else { return }
+         guard case .results(let list) = searchState,
+               let index = sender as? Int,
+               let controller = segue.destination as? DetailViewController else { return }
+         
          controller.modalPresentationStyle = .custom
-         guard let index = sender as? Int else { return }
-         controller.setSearchResult(searchResults[index])
+         controller.setSearchResult(list[index])
       }
    }
 }
@@ -138,31 +144,35 @@ extension StoreSearchController: UISearchBarDelegate {
 
 extension StoreSearchController: UITableViewDataSource {
    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      guard hasSearched else { return 0 }
-      return searchResults.isEmpty || isLoading ? 1 : searchResults.count
+      switch searchState {
+      case .notSearchedYet:
+         return 0
+      case .loading, .noResults:
+         return 1
+      case .results(let list):
+         return list.count
+      }
    }
    
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
-      //MARK: Dequeue LoadingCell
-      if isLoading {
+      switch searchState {
+      case .notSearchedYet:
+         fatalError("Table view should not dequeue any cell when not searched yet")
+      case .loading:
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.loadingCell, for: indexPath)
          let spinner = cell.viewWithTag(1000) as? UIActivityIndicatorView
          spinner?.startAnimating()
          return cell
-      }
-      
-      //MARK: Dequeue NothingFoundCell
-      if searchResults.isEmpty {
+      case .noResults:
          let cell = tableView.dequeueReusableCell(withIdentifier: Constants.nothingFoundCell, for: indexPath)
          return cell
+      case .results(let list):
+         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.searchResultCell, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
+         let searchResult = list[indexPath.row]
+         cell.configure(for: searchResult)
+         return cell
       }
-      
-      //MARK: Dequeue SearchResultCell
-      guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.searchResultCell, for: indexPath) as? SearchResultCell else { return UITableViewCell() }
-      let searchResult = searchResults[indexPath.row]
-      cell.configure(for: searchResult)
-      return cell
    }
 }
 
@@ -170,8 +180,12 @@ extension StoreSearchController: UITableViewDataSource {
 
 extension StoreSearchController: UITableViewDelegate {
    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-      
-      return searchResults.count == 0 || isLoading ? nil : indexPath
+      switch searchState {
+      case .notSearchedYet, .loading, .noResults:
+         return nil
+      case .results:
+         return indexPath
+      }
    }
    
    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -199,12 +213,11 @@ extension StoreSearchController {
    private func showLandscape(with coordinator: UIViewControllerTransitionCoordinator?) {
       
       guard landscapeVC == nil else { return }
-      
       landscapeVC = storyboard?.instantiateViewController(withIdentifier: "LandscapeViewController") as? LandscapeViewController
 
       guard let controller = landscapeVC else { return }
       controller.view.frame = view.bounds
-      controller.setSearchResults(with: searchResults)
+      controller.setSearchState(searchState)
       view.addSubview(controller.view)
       addChild(controller)
       
