@@ -83,8 +83,11 @@ final class StoreSearchController: UIViewController {
          case .success(let resultArray):
             var searchResults = resultArray.results
             searchResults.sort(by: <)
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+               guard let self = self else { return }
                self.searchState = searchResults.isEmpty ? .noResults : .results(searchResults)
+               self.landscapeVC?.setSearchState(self.searchState)
+               self.landscapeVC?.searchResultsReceived()
                self.tableView.reloadData()
             }
          case .failure(let networkError):
@@ -244,6 +247,7 @@ extension StoreSearchController {
       controller.willMove(toParent: nil)
       
       coordinator?.animate(alongsideTransition: { _ in
+         controller.presentedViewController?.dismiss(animated: true)
          controller.view.alpha = 0
       }, completion: { [weak self] _ in
          controller.view.removeFromSuperview()

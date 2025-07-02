@@ -91,7 +91,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ich-MT-FyP" userLabel="Pop-up View">
-                                <rect key="frame" x="32" y="56.5" width="280" height="262.5"/>
+                                <rect key="frame" x="150" y="56.5" width="280" height="262.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Vcm-hd-JEc">
                                         <rect key="frame" x="16" y="16" width="248" height="230.5"/>
@@ -213,8 +213,14 @@
                         <viewLayoutGuide key="safeArea" id="JUv-xv-DAk"/>
                         <color key="backgroundColor" name="WhiteTransparent"/>
                         <constraints>
-                            <constraint firstItem="JUv-xv-DAk" firstAttribute="trailing" secondItem="Ich-MT-FyP" secondAttribute="trailing" constant="32" id="cMm-uh-jfG"/>
-                            <constraint firstItem="Ich-MT-FyP" firstAttribute="leading" secondItem="JUv-xv-DAk" secondAttribute="leading" constant="32" id="hcy-Vd-ZbR"/>
+                            <constraint firstItem="JUv-xv-DAk" firstAttribute="trailing" secondItem="Ich-MT-FyP" secondAttribute="trailing" constant="32" id="cMm-uh-jfG">
+                                <variation key="heightClass=compact-widthClass=compact" constant="150"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="200"/>
+                            </constraint>
+                            <constraint firstItem="Ich-MT-FyP" firstAttribute="leading" secondItem="JUv-xv-DAk" secondAttribute="leading" constant="32" id="hcy-Vd-ZbR">
+                                <variation key="heightClass=compact-widthClass=compact" constant="150"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="200"/>
+                            </constraint>
                             <constraint firstItem="Ich-MT-FyP" firstAttribute="centerY" secondItem="31f-uB-9gU" secondAttribute="centerY" id="k3O-4W-loB"/>
                             <constraint firstItem="Ich-MT-FyP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JUv-xv-DAk" secondAttribute="top" constant="16" id="oqZ-8O-wvM"/>
                             <constraint firstItem="JUv-xv-DAk" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ich-MT-FyP" secondAttribute="bottom" constant="16" id="q0d-D3-4jJ"/>
@@ -235,7 +241,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7E2-j0-JAZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="664.79999999999995" y="1.3493253373313345"/>
+            <point key="canvasLocation" x="697" y="-418"/>
         </scene>
         <!--Landscape View Controller-->
         <scene sceneID="yOk-ag-TWs">
@@ -268,13 +274,17 @@
                     <connections>
                         <outlet property="pageControl" destination="w0o-fQ-qIP" id="ZsC-M3-t3K"/>
                         <outlet property="scrollView" destination="hmE-Bf-QPw" id="G6Q-HB-LAM"/>
+                        <segue destination="N3Z-wn-2LU" kind="presentation" identifier="ShowDetail" id="f7Y-AX-IXa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gy3-bB-nN8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1502.6986506746628" y="0.80000000000000004"/>
+            <point key="canvasLocation" x="-115" y="-786"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="f7Y-AX-IXa"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="PriceButton" width="11" height="10"/>
         <image name="xmark.circle.fill" catalog="system" width="128" height="123"/>

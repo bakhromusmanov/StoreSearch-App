@@ -20,6 +20,22 @@ final class LandscapeViewController: UIViewController {
    @IBOutlet private weak var scrollView: UIScrollView!
    @IBOutlet private weak var pageControl: UIPageControl!
    
+   private let loaderView: UIActivityIndicatorView = {
+      let view = UIActivityIndicatorView(style: .large)
+      view.hidesWhenStopped = true
+      return view
+   }()
+   
+   private let nothingFoundLabel: UILabel = {
+      let label = UILabel()
+      label.text = Constants.nothingFoundLabelText
+      label.textColor = Constants.nothingFoundLabelColor
+      label.font = .preferredFont(forTextStyle: .headline)
+      label.numberOfLines = 1
+      label.isHidden = true
+      return label
+   }()
+   
    //MARK: - Initialization
    
    
@@ -27,7 +43,7 @@ final class LandscapeViewController: UIViewController {
     
    override func viewDidLoad() {
       super.viewDidLoad()
-      setupViews()
+      removeConstraints()
       refreshUI()
    }
    
@@ -35,12 +51,18 @@ final class LandscapeViewController: UIViewController {
       super.viewWillLayoutSubviews()
       if isFirstTime {
          isFirstTime = false
+         setupScrollView()
+         setupNothingFoundLabel()
+         setupLoadingView()
+         setupPageControl()
          
          switch searchState {
-         case .notSearchedYet, .loading, .noResults:
-            break
+         case .notSearchedYet, .noResults:
+            nothingFoundLabel.isHidden = false
+         case .loading:
+            loaderView.startAnimating()
          case .results(let list):
-            configureTileButtons(with: list)
+            setupTileButtons(with: list)
          }
       }
    }
@@ -57,15 +79,29 @@ final class LandscapeViewController: UIViewController {
       self.searchState = searchState
    }
    
-   //MARK: - Private Methods
-    
-   private func makeButton(from searchResult: SearchResult) -> UIButton {
+   func searchResultsReceived() {
+      loaderView.stopAnimating()
+      
+      switch searchState {
+      case .notSearchedYet, .noResults, .loading:
+         nothingFoundLabel.isHidden = false
+      case .results(let list):
+         setupTileButtons(with: list)
+      }
+   }
+}
+
+//MARK: - Private Methods
+
+private extension LandscapeViewController {
+   
+   func makeButton(from searchResult: SearchResult) -> UIButton {
       
       let button = UIButton(type: .custom)
       button.setBackgroundImage(UIImage(named: Constants.landscapeButtonImageName), for: .normal)
       button.imageView?.contentMode = .scaleAspectFit
+      button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
       
-      //Load image
       guard let imageSmall = searchResult.imageSmall,
             let imageURL = URL(string: imageSmall) else { return UIButton() }
       
@@ -84,9 +120,30 @@ final class LandscapeViewController: UIViewController {
    }
 }
 
+//MARK: - Navigation
+
+extension LandscapeViewController {
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      if segue.identifier == Constants.detailViewController {
+         guard let controller = segue.destination as? DetailViewController,
+               let index = sender as? Int,
+               case .results(let list) = searchState else { return }
+         
+         let searchResult = list[index - Constants.tagOffset]
+         controller.setSearchResult(searchResult)
+      }
+   }
+}
+
 //MARK: - Actions
 
 private extension LandscapeViewController {
+   
+   @objc func buttonPressed(_ sender: UIButton) {
+      let index = sender.tag
+      performSegue(withIdentifier: Constants.detailViewController, sender: index)
+   }
+   
    @IBAction func pageChanged(_ sender: UIPageControl) {
       let offsetX = scrollView.bounds.size.width * CGFloat(sender.currentPage)
       
@@ -126,7 +183,7 @@ extension LandscapeViewController: UIScrollViewDelegate {
 //MARK: - Layout & Constraints
 
 private extension LandscapeViewController {
-   func setupViews() {
+   func removeConstraints() {
       view.removeConstraints(view.constraints)
       view.translatesAutoresizingMaskIntoConstraints = true
       
@@ -137,7 +194,22 @@ private extension LandscapeViewController {
       pageControl.translatesAutoresizingMaskIntoConstraints = true
    }
    
-   func configureScrollView() {
+   func setupNothingFoundLabel() {
+      view.addSubview(nothingFoundLabel)
+      nothingFoundLabel.sizeToFit()
+      nothingFoundLabel.center = CGPoint(
+         x: view.bounds.width / 2,
+         y: view.bounds.height / 2)
+   }
+   
+   func setupLoadingView() {
+      view.addSubview(loaderView)
+      loaderView.center = CGPoint(
+         x: view.bounds.width / 2 + 0.5,
+         y: view.bounds.height / 2 + 0.5)
+   }
+   
+   func setupScrollView() {
       let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
       scrollView.frame = safeAreaFrame
       scrollView.isPagingEnabled = true
@@ -145,7 +217,7 @@ private extension LandscapeViewController {
       scrollView.showsHorizontalScrollIndicator = false
    }
    
-   func configurePageControl() {
+   func setupPageControl() {
       let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
       pageControl.frame = CGRect(
          x: safeAreaFrame.minX,
@@ -157,7 +229,7 @@ private extension LandscapeViewController {
       pageControl.currentPage = 0
    }
    
-   func configureTileButtons(with searchResults: [SearchResult]) {
+   func setupTileButtons(with searchResults: [SearchResult]) {
       
       //Configure container
       let containerWidth = scrollView.bounds.width
@@ -179,9 +251,10 @@ private extension LandscapeViewController {
       var currentRow = 0
       var currentColumn = 0
       
-      for result in searchResults {
+      for (index, result) in searchResults.enumerated() {
          let button = makeButton(from: result)
          scrollView.addSubview(button)
+         button.tag = Constants.tagOffset + index
          button.frame = CGRect(
             x: Int(buttonPosX + itemInsetX + CGFloat(currentColumn) * itemSize.width),
             y: Int(containerInsetY + itemInsetY + CGFloat(currentRow) * itemSize.height),
@@ -218,5 +291,9 @@ private extension LandscapeViewController {
    enum Constants {
       static let landscapeBackgroundImageName = "LandscapeBackground"
       static let landscapeButtonImageName = "LandscapeButton"
+      static let nothingFoundLabelText = "(Nothing Found)"
+      static let detailViewController = "ShowDetail"
+      static let nothingFoundLabelColor: UIColor = .artistName
+      static let tagOffset = 2000
    }
 }
