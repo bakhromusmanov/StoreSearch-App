@@ -36,4 +36,3 @@ Welcome to **StoreSearch**, a powerful app that lets you search the iTunes Store
 ## 🖼️ Screenshots
 
 ![Screenshot 1](Simulator%20Screenshot%20-%201.png)
-![Screenshot 1](Simulator%20Screenshot%20-%202.png)
