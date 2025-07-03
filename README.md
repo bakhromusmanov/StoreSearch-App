@@ -19,6 +19,8 @@ Welcome to **StoreSearch**, a powerful app that lets you search the iTunes Store
      - Portrait view for a clean, linear display.
      - Landscape view optimized for wider screens with unique layouts.
 
+![Screenshot 1](Simulator%20Screenshot%20-%201.png)
+
 ### 4. **Dark Mode and Light Mode Support**:
    - Full support for both light and dark appearances, ensuring a seamless and visually pleasing experience.
 
@@ -32,7 +34,3 @@ Welcome to **StoreSearch**, a powerful app that lets you search the iTunes Store
 ### 7. **Dynamic Table View**:
    - Built-in search capability integrated with table views.
    - Smooth scrolling and data handling for responsive performance.
-
-## 🖼️ Screenshots
-
-![Screenshot 1](Simulator%20Screenshot%20-%201.png)
