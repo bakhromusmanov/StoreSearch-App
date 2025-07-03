@@ -54,11 +54,11 @@ final class SearchResult: Codable {
    var bookGenre: [String]?
    
    var name: String {
-      return trackName ?? collectionName ?? "None"
+      return trackName ?? collectionName ?? Constants.unknown.localized
    }
    
    var storeURL: String {
-      trackViewUrl ?? collectionViewUrl ?? "None"
+      trackViewUrl ?? collectionViewUrl ?? Constants.unknown.localized
    }
    
    var price: Double {
@@ -71,23 +71,23 @@ final class SearchResult: Codable {
       } else if let genres = bookGenre {
          return genres.joined(separator: ", ")
       }
-      return "Unknown"
+      return Constants.unknown.localized
    }
    
    var type: String {
-      let kind = kind ?? "audiobook"
+      let kind = kind ?? Constants.unknown.localized
       switch kind {
-      case "audiobook": return "Audio Book"
-      case "album": return "Album"
-      case "book": return "Book"
-      case "ebook": return "E-book"
-      case "feature-movie": return "Movie"
-      case "music-video": return "Music Video"
-      case "podcast": return "Podcast"
-      case "software": return "App"
-      case "song": return "Song"
-      case "tv-episode": return "TV Episode"
-      default: return "Unknown"
+      case "audiobook": return Constants.audiobook.localized
+      case "album": return Constants.album.localized
+      case "book": return Constants.book.localized
+      case "ebook": return Constants.ebook.localized
+      case "feature-movie": return Constants.movie.localized
+      case "music-video": return Constants.musicVideo.localized
+      case "podcast": return Constants.podcast.localized
+      case "software": return Constants.software.localized
+      case "song": return Constants.song.localized
+      case "tv-episode": return Constants.tvEpisode.localized
+      default: return Constants.unknown.localized
       }
    }
 }
@@ -101,7 +101,7 @@ extension SearchResult: CustomStringConvertible {
         Type: \(type)
         Price: \(price)
         StoreURL: \(storeURL)
-        Artist: \(artistName ?? "Unknown")
+        Artist: \(artistName ?? Constants.unknown.localized)
         """
    }
 }
@@ -114,5 +114,23 @@ extension SearchResult: Comparable {
    
    static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
       return lhs.name == rhs.name
+   }
+}
+
+//MARK: - Constants
+
+private extension SearchResult {
+   enum Constants {
+      static let audiobook = "type_audiobook"
+      static let album = "type_album"
+      static let book = "type_book"
+      static let ebook = "type_ebook"
+      static let movie = "type_movie"
+      static let musicVideo = "type_music_video"
+      static let podcast = "type_podcast"
+      static let software = "type_software"
+      static let song = "type_song"
+      static let tvEpisode = "type_tv_episode"
+      static let unknown = "type_unknown"
    }
 }

@@ -58,7 +58,7 @@ final class DetailViewController: UIViewController {
       artistNameLabel.text = searchResult.artistName
       kindLabel.text = searchResult.kind
       genreLabel.text = searchResult.genre
-      priceButton.titleLabel?.text = configurePriceText()
+      priceButton.setTitle(configurePriceText(), for: .normal)
       
       //MARK: Loading Artwork Thumbnail
       if let urlString = searchResult.imageLarge, let imageURL = URL(string: urlString) {
@@ -90,7 +90,7 @@ final class DetailViewController: UIViewController {
       let formatter = NumberFormatter()
       formatter.numberStyle = .currency
       formatter.currencyCode = searchResult.currency
-      
+
       let priceText: String
       if searchResult.price == 0 {
          priceText = Constants.priceFree

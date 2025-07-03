@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  StoreSearch
+
+  Created by Bakhrom Usmanov on 02/07/25.
+  
+*/
+
+CFBundleDisplayName = "iTunes Search";

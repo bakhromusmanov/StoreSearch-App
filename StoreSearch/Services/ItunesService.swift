@@ -35,9 +35,16 @@ final class ItunesService {
          return nil
       }
       
-      let baseURL = "https://itunes.apple.com/search?term=\(encryptedText)&limit=50&entity=\(category.kind)"
+      let locale = Locale.autoupdatingCurrent
+      let language = locale.languageCode ?? "en"
+      let countryCode = locale.regionCode ?? "US"
+      let limit = 50
       
-      guard let url = URL(string: baseURL) else {
+      let baseURL = "https://itunes.apple.com/search?term=\(encryptedText)"
+      
+      let parameters = "&lang=\(language)&country=\(countryCode)" + "&limit=\(limit)&entity=\(category.kind)"
+      
+      guard let url = URL(string: baseURL + parameters) else {
          completion(.failure(.invalidURL))
          return nil
       }

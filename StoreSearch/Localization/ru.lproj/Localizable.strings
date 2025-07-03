@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  StoreSearch
+
+  Created by Bakhrom Usmanov on 02/07/25.
+  
+*/
+
+"type_audiobook" = "Аудиокнига";
+"type_album" = "Альбом";
+"type_book" = "Книга";
+"type_ebook" = "Электронная книга";
+"type_movie" = "Фильм";
+"type_music_video" = "Музыкальное видео";
+"type_podcast" = "Подкаст";
+"type_software" = "Приложение";
+"type_song" = "Песня";
+"type_tv_episode" = "Телевизионный эпизод";
+"type_unknown" = "Не найдено";
